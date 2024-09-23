@@ -3,17 +3,18 @@ import dotenv from "dotenv";
 import cors from "cors";
 import "./database/index.js"; // Ensure this path correctly points to your database connection file
 
+dotenv.config(); // Load environment variables
+
+const app = express(); // Initialize the Express app
+
+// Use CORS middleware
+app.use(cors({ origin: "http://localhost:5173" })); // Change to cors() for all origins if needed
+
+app.use(express.json()); // Parse JSON request bodies
+
 // Import Routers
 import productRouter from "./routes/productRoutes.js";
 import categoriesRouter from "./routes/categoriesRouter.js";
-
-dotenv.config();
-
-const app = express();
-
-// Middleware
-app.use(cors({ origin: "*" }));
-app.use(express.json()); // Parse JSON request bodies
 
 // Routes
 app.use("/api/v1/products", productRouter);
@@ -26,7 +27,13 @@ app.get("/", (req, res) => {
 
 // Catch-all route for invalid endpoints
 app.get("/*", (req, res) => {
-  res.status(404).send("Wrong URL");
+  res.status(404).json({ message: "Not Found" });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Something went wrong!" });
 });
 
 // App listening port

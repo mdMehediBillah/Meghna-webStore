@@ -52,6 +52,7 @@ export const createProduct = async (req, res) => {
       isVegan,
       isLactosFree,
       isGlutenFree,
+      isBestSeller,
       offer,
     } = req.body;
 
@@ -90,6 +91,7 @@ export const createProduct = async (req, res) => {
       isVegan,
       isLactosFree,
       isGlutenFree,
+      isBestSeller,
       offer: {
         discountPercentage: offer.discountPercentage,
         discountprice:
@@ -140,6 +142,7 @@ export const updateProduct = async (req, res) => {
       isVegan,
       isLactosFree,
       isGlutenFree,
+      isBestSeller,
       offer = {}, // Default to empty object if not provided
     } = req.body;
 
@@ -177,6 +180,8 @@ export const updateProduct = async (req, res) => {
       isVegan,
       isLactosFree,
       isGlutenFree,
+      isBestSeller,
+
       // Only update the offer fields if they are provided in the request
       ...(offer && {
         "offer.discountPercentage": offer.discountPercentage || 0,

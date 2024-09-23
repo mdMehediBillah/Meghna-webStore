@@ -85,6 +85,10 @@ const productSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isBestSeller: {
+      type: Boolean,
+      default: false,
+    },
     offer: {
       discountPercentage: {
         type: Number,
