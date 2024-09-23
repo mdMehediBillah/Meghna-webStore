@@ -34,7 +34,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import offerData from "../../Data/db.json";
-import OfferSingleCard from "../components/Cards/OfferSingleCard.vue";
+import OfferSingleCard from "../components/Cards/SingleCard.vue";
 
 // Reactive properties
 const router = useRouter();

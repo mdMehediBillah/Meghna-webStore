@@ -173,13 +173,19 @@
         <div class="mr-6">
           <label class="inline-flex items-center">
             <input type="checkbox" v-model="form.isLactosFree" />
-            <span class="ml-2">Lactose-free</span>
+            <span class="ml-2">Lactose free</span>
           </label>
         </div>
         <div class="mr-6">
           <label class="inline-flex items-center">
             <input type="checkbox" v-model="form.isGlutenFree" />
-            <span class="ml-2">Gluten-free</span>
+            <span class="ml-2">Gluten free</span>
+          </label>
+        </div>
+        <div class="mr-6">
+          <label class="inline-flex items-center">
+            <input type="checkbox" v-model="form.isBestSeller" />
+            <span class="ml-2">Best seller</span>
           </label>
         </div>
       </div>
@@ -308,6 +314,7 @@ const form = ref({
   isVegan: false,
   isLactosFree: false,
   isGlutenFree: false,
+  isBestSeller: false,
   offer: {
     discountPercentage: 0,
     discountprice: 0,
@@ -387,6 +394,7 @@ const resetForm = () => {
     isVegan: false,
     isLactosFree: false,
     isGlutenFree: false,
+    isBestSeller: false,
     offer: {
       discountPercentage: 0,
       discountprice: 0,

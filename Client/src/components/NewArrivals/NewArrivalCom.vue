@@ -20,7 +20,7 @@
               }"
             ></i>
           </span>
-          <span class="mr-2" @click="nextPage">
+          <span @click="nextPage">
             <i
               class="fas fa-chevron-right cursor-pointer bg-green-200 rounded-xl px-4 py-2 hover:bg-green-300"
               :class="{
@@ -38,33 +38,53 @@
         class="flex transition-transform duration-500 ease-in-out"
         :style="{ transform: `translateX(-${(currentPage - 1) * 100}%)` }"
       >
-        <!-- Loop through all offers -->
+        <!-- Loop through all new arrivals -->
         <div
           class="col-md-4 w-full flex-shrink-0 px-2"
-          v-for="offer in weeklyOffer"
-          :key="offer.id"
+          v-for="product in paginatedNewArrivals"
+          :key="product._id"
           style="flex-basis: calc(100% / 6)"
         >
-          <OfferSingleCard :offer="offer" />
+          <SingleCard :product="product" />
         </div>
       </div>
     </div>
+
+    <!-- Loading and Error Handling -->
+    <div v-if="isLoading" class="text-center mt-5">Loading...</div>
+    <div v-if="error" class="text-red-500 text-center mt-5">{{ error }}</div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import offerData from "../../../Data/newProductData.json";
-import OfferSingleCard from "../Cards/OfferSingleCard.vue";
+import { ref, computed, onMounted } from "vue";
+import { useProductStore } from "../../stores/useProductStore.js";
+import SingleCard from "../Cards/SingleCard.vue";
 
-// Reactive Properties
-const weeklyOffer = ref(offerData || []);
 const currentPage = ref(1); // Start at page 1
-const offersPerPage = ref(6); // Number of offers per page
+const productsPerPage = ref(6); // Number of offers per page
+
+// Use the product store
+const productStore = useProductStore();
+
+// Destructure the state and getters
+const { fetchProducts, isLoading, error, newArrivals } = productStore;
+console.log(newArrivals);
+
+// Fetch products when the component is mounted
+onMounted(() => {
+  fetchProducts();
+});
 
 // Computed property to calculate the total number of pages
 const totalPages = computed(() => {
-  return Math.ceil(weeklyOffer.value.length / offersPerPage.value);
+  return Math.ceil(newArrivals.length / productsPerPage.value);
+});
+
+// Computed property to get the paginated new arrivals
+const paginatedNewArrivals = computed(() => {
+  const start = (currentPage.value - 1) * productsPerPage.value;
+  return newArrivals.slice(start, start + productsPerPage.value);
 });
 
 // Function to move to the next page
@@ -83,16 +103,5 @@ const prevPage = () => {
 </script>
 
 <style scoped>
-/* Add custom styles if needed */
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.flex {
-  display: flex;
-}
-
-.transition-transform {
-  transition: transform 0.5s ease-in-out;
-}
+/* Add scoped styles here if needed */
 </style>
