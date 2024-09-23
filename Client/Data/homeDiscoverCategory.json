@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Rice",
+    "image": "https://www.jamoona.com/cdn/shop/files/Rice.jpg?v=1721984676&width=535"
+  },
+  {
+    "id": 2,
+    "name": "Flour & Flatbreads",
+    "image": "https://www.jamoona.com/cdn/shop/files/Flourandflatbreads.jpg?v=1721984676&width=535"
+  },
+  {
+    "id": 3,
+    "name": "Lentils & Beans",
+    "image": "https://www.jamoona.com/cdn/shop/files/Lentilsandbeans.jpg?v=1721984675&width=535"
+  },
+  {
+    "id": 4,
+    "name": "Spices",
+    "image": "https://www.jamoona.com/cdn/shop/files/Spices.jpg?v=1721984676&width=535"
+  },
+  {
+    "id": 5,
+    "name": "Fruits & Vegetables",
+    "image": "https://www.jamoona.com/cdn/shop/files/fruitsandvegetables.jpg?v=1721984675&width=535"
+  },
+  {
+    "id": 6,
+    "name": "Snacks & Sweets",
+    "image": "https://www.jamoona.com/cdn/shop/files/Snacksandsweets.jpg?v=1721984676&width=535"
+  },
+  {
+    "id": 7,
+    "name": "Ready to Eat",
+    "image": "https://www.jamoona.com/cdn/shop/files/readytoeat.jpg?v=1721984676&width=535"
+  },
+  {
+    "id": 8,
+    "name": "Pickles & Condiments",
+    "image": "https://www.jamoona.com/cdn/shop/files/Pickleandcondiments.jpg?v=1721984676&width=535"
+  },
+  {
+    "id": 9,
+    "name": "Sauces, Oil & Ghee",
+    "image": "https://www.jamoona.com/cdn/shop/files/butterandGhee.jpg?v=1721984676&width=535"
+  },
+  {
+    "id": 10,
+    "name": "Fresh Paneer & Butter",
+    "image": "https://www.jamoona.com/cdn/shop/files/FRESH_PANEER_BATTER.jpg?v=1721984676&width=535"
+  },
+  {
+    "id": 11,
+    "name": "Beverages",
+    "image": "https://www.jamoona.com/cdn/shop/files/Beverages.jpg?v=1721984676&width=535"
+  },
+  {
+    "id": 12,
+    "name": "Froozen",
+    "image": "https://www.jamoona.com/cdn/shop/files/Frozen.jpg?v=1721984675&width=535"
+  }
+]

@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "name": "Qarshi",
+    "description": "Sandal Syrup",
+    "price": 3.89,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "800 ml",
+    "image": "https://www.jamoona.com/cdn/shop/files/Qarshi-800ml-Sandelholzsirup-9039804.png?v=1725928474&width=360"
+  },
+  {
+    "id": 2,
+    "name": "Qarshi",
+    "description": "Cardamom Syrup",
+    "price": 3.89,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "800 ml",
+    "image": "https://www.jamoona.com/cdn/shop/files/Qarshi-800ml-Kardamomsirup-9039803.png?v=1725928468&width=360"
+  },
+  {
+    "id": 3,
+    "name": "Qarshi",
+    "description": "Bazoori Syrup",
+    "price": 3.89,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "800 ml",
+    "image": "https://www.jamoona.com/cdn/shop/files/Qarshi-800ml-Bazoorisirup-9039802.png?v=1725928464&width=360"
+  },
+  {
+    "id": 4,
+    "name": "Qarshi",
+    "description": "Rose Syrup",
+    "price": 3.89,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "800 ml",
+    "image": "https://www.jamoona.com/cdn/shop/files/Qarshi-800ml-Rosensirup-9039801.png?v=1725928459&width=360"
+  },
+  {
+    "id": 5,
+    "name": "Shezan",
+    "description": "Thai Sweet Chilli Sauce",
+    "price": 3.89,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "330 ml",
+    "image": "https://www.jamoona.com/cdn/shop/files/Shezan-330g-suesse-Thai-Chilisauce-9039790.png?v=1725928454&width=360"
+  },
+  {
+    "id": 6,
+    "name": "Shezan",
+    "description": "Desi Palak (Spinach)",
+    "price": 4.79,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "840 g",
+    "image": "https://www.jamoona.com/cdn/shop/files/Shezan-840g-Desi-Palak--Spinat--9039789.png?v=1725928448&width=360"
+  },
+  {
+    "id": 7,
+    "name": "Shezan",
+    "description": "Sriracha Sauce",
+    "price": 4.79,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "350 g",
+    "image": "https://www.jamoona.com/cdn/shop/files/Shezan-305g-Sriracha-Sauce-9039788.png?v=1725928444&width=360"
+  },
+  {
+    "id": 8,
+    "name": "Shezan",
+    "description": "Lychee Fruit Drink",
+    "price": 1.79,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "250 g",
+    "image": "https://www.jamoona.com/cdn/shop/files/Shezan-250ml-Litschi-Fruchtgetraenk-9039787.png?v=1725928436&width=360"
+  },
+  {
+    "id": 9,
+    "name": "Shezan",
+    "description": "Lemon Barley Fruit",
+    "price": 1.79,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "250 g",
+    "image": "https://www.jamoona.com/cdn/shop/files/Shezan-250ml-Zitronen-Gersten-Fruchtgetraenk-9039786.png?v=1725928431&width=360"
+  },
+  {
+    "id": 10,
+    "name": "Knorr",
+    "description": "Chicken Noodles (Halal)",
+    "price": 3.99,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "200 g",
+    "image": "https://www.jamoona.com/cdn/shop/files/Knorr-200g-Chicken-Nudeln--Halal--9039778.png?v=1725928426&width=360"
+  },
+  {
+    "id": 11,
+    "name": "Ashoka",
+    "description": " Mixed Pickle",
+    "price": 4.69,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "200 g",
+    "image": "https://www.jamoona.com/cdn/shop/files/Ashoka-1kg-Mixed-Pickle-9039770.png?v=1725928416&width=360"
+  },
+  {
+    "id": 12,
+    "name": "Ashoka",
+    "description": "Dum Aloo RTE",
+    "price": 2.89,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "250 g",
+    "image": "https://www.jamoona.com/cdn/shop/files/Ashoka-250g-Dum-Aloo-RTE-9039759.png?v=1725928411&width=360"
+  },
+  {
+    "id": 13,
+    "name": "PG Tips",
+    "description": "Teabags Black Tea",
+    "price": 39.99,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "1100's",
+    "image": "https://www.jamoona.com/cdn/shop/files/PG-Tips-1100-s-Teebeutel-Schwarzer-Tee--9039650.png?v=1725928402&width=360"
+  },
+  {
+    "id": 14,
+    "name": "Anjappar",
+    "description": "Vermicelli unroasted",
+    "price": 2.29,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "500 g",
+    "image": "https://www.jamoona.com/cdn/shop/files/Anjappar-500g-Vermicelli-Fadennudeln-ungeroestet-9017883_1.jpg?v=1725928393&width=360"
+  },
+  {
+    "id": 15,
+    "name": "Anjappar",
+    "description": "Ragi Whole",
+    "price": 2.89,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "1 kg",
+    "image": "https://www.jamoona.com/cdn/shop/files/Anjappar-1kg-Ragi-ganz--MHD-04-09-2023--9017872.png?v=1725928387&width=360"
+  },
+  {
+    "id": 16,
+    "name": "Anjappar",
+    "description": "Horse Gram",
+    "price": 2.29,
+    "category": "Grocery",
+    "newArrival": true,
+    "weight": "1 kg",
+    "image": "https://www.jamoona.com/cdn/shop/files/Anjappar-500g-Pferdebohnen--MHD-09-11-2023--9017855.png?v=1725928381&width=360"
+  }
+]
