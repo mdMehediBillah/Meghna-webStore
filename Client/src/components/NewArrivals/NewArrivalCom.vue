@@ -69,13 +69,13 @@ const productStore = useProductStore();
 
 // Destructure the state and getters
 const { fetchProducts, isLoading, error, newArrivals } = productStore;
-console.log(newArrivals);
+// console.log(newArrivals);
 
 // Fetch products when the component is mounted
 onMounted(() => {
   fetchProducts();
 });
-console.log(newArrivals);
+// console.log(newArrivals);
 
 // Computed property to calculate the total number of pages
 const totalPages = computed(() => {

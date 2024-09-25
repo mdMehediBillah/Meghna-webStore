@@ -22,7 +22,7 @@
 
     <!-- Grid displaying filtered new arrivals -->
     <div
-      class="grid lg:grid-cols-6 md:grid-cols-3 gap-4 container justify-between"
+      class="grid lg:grid-cols- md:grid-cols-3 gap-4 container justify-between"
     >
       <div
         class="col-md-4"
