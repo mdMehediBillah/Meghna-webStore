@@ -1,3 +1,4 @@
+import NewArrivalsView from "@/views/NewArrivalsView.vue";
 import UpdateProductView from "@/views/UpdateProductView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -29,6 +30,12 @@ const router = createRouter({
       name: "offers",
       component: WeeklyOffer,
       meta: { title: "Weekly Offers" },
+    },
+    {
+      path: "/newArrivals",
+      name: "newArrivals",
+      component: NewArrivalsView,
+      meta: { title: "New Arrivals" },
     },
     {
       path: "/products/:id",

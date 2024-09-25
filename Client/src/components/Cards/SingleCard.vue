@@ -70,17 +70,16 @@
             </div>
           </li>
         </ul>
-      </div>
-
-      <!-- Cart, Edit, and Delete Buttons -->
-      <div class="mt-4 flex space-x-2">
         <!-- Cart Icon -->
         <button
           class="fa-solid fa-cart-shopping text-gray-600 text-sm py-1 px-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
           aria-label="Add to cart"
           title="Add to cart"
         ></button>
+      </div>
 
+      <!-- Cart, Edit, and Delete Buttons -->
+      <div class="mt-4 flex space-x-2">
         <!-- Edit Offer Icon -->
         <button
           class="fa-solid fa-pen-to-square text-gray-600 text-sm py-1 px-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"

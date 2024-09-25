@@ -5,7 +5,7 @@
       <h3 class="font-semibold text-xl py-2">New Arrivals</h3>
       <div class="flex gap-8 items-center">
         <router-link
-          to="/offers"
+          to="/newArrivals"
           class="text-gray-700 bg-rose-200 py-1 px-4 rounded-md cursor-pointer hover:bg-green-600 hover:text-white transition-colors duration-300"
         >
           View All
@@ -36,7 +36,7 @@
     <div class="overflow-hidden container">
       <div
         class="flex transition-transform duration-500 ease-in-out"
-        :style="{ transform: `translateX(-${(currentPage - 1) * 100}%)` }"
+        :style="transformStyle"
       >
         <!-- Loop through all new arrivals -->
         <div
@@ -75,6 +75,7 @@ console.log(newArrivals);
 onMounted(() => {
   fetchProducts();
 });
+console.log(newArrivals);
 
 // Computed property to calculate the total number of pages
 const totalPages = computed(() => {
@@ -85,6 +86,11 @@ const totalPages = computed(() => {
 const paginatedNewArrivals = computed(() => {
   const start = (currentPage.value - 1) * productsPerPage.value;
   return newArrivals.slice(start, start + productsPerPage.value);
+});
+
+// Computed property for transform style
+const transformStyle = computed(() => {
+  return `transform: translateX(-${(currentPage.value - 1) * 100}%)`;
 });
 
 // Function to move to the next page
