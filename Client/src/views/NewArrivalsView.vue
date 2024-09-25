@@ -1,9 +1,8 @@
 <template>
   <div>
     <div class="container mt-10 flex justify-between items-center flex-wrap">
-      <h3 class="font-semibold text-xl py-2 uppercase">Weekly Offers</h3>
+      <h3 class="font-semibold text-xl py-2 uppercase">New Arrivals</h3>
       <!-- Display the offer validity dates -->
-      <p>{{ offerValidityText }}</p>
       <div class="flex gap-8 items-center">
         <div class="flex gap-6 items-center">
           <span>Filter</span>
@@ -53,8 +52,7 @@ const filter = ref("all");
 const productStore = useProductStore();
 
 // Destructure the state and getters
-const { fetchProducts, isLoading, error, newArrivals, discountedProducts } =
-  productStore;
+const { fetchProducts, isLoading, error, newArrivals } = productStore;
 
 // Fetch products when the component is mounted
 onMounted(() => {
@@ -65,10 +63,10 @@ onMounted(() => {
 // Computed property to filter new arrivals based on the selected filter
 const filteredOffers = computed(() => {
   if (filter.value === "all") {
-    return discountedProducts;
+    return newArrivals;
   }
 
-  return discountedProducts.filter((product) => {
+  return newArrivals.filter((product) => {
     switch (filter.value) {
       case "glutenFree":
         return product.glutenFree;
