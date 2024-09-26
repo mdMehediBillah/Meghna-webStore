@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <section class="my-24">
     <!-- Header Section -->
     <div class="container mt-10 flex justify-between items-center flex-wrap">
-      <h3 class="font-semibold text-xl py-2">New Arrivals</h3>
+      <h3 class="font-semibold text-xl py-2 uppercase">New Arrivals</h3>
       <div class="flex gap-8 items-center">
         <router-link
           to="/newArrivals"
@@ -53,7 +53,7 @@
     <!-- Loading and Error Handling -->
     <div v-if="isLoading" class="text-center mt-5">Loading...</div>
     <div v-if="error" class="text-red-500 text-center mt-5">{{ error }}</div>
-  </div>
+  </section>
 </template>
 
 <script setup>

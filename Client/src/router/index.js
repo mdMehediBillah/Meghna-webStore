@@ -69,13 +69,13 @@ const routes = [
     path: "/addProduct",
     name: "addProduct",
     component: AddProductView,
-    meta: { requiresAuth: true, title: "Add Product" },
+    meta: { title: "Add Product" },
   },
   {
     path: "/addCategory",
     name: "addCategory",
     component: AddCategoryView,
-    meta: { requiresAuth: true, title: "Add Category" },
+    meta: { title: "Add Category" },
   },
   {
     path: "/:pathMatch(.*)*",
