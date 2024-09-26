@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto my-8">
-    <div class="flex items-center gap-2">
+  <div>
+    <div class="flex items-center gap-2 container mx-auto my-8">
       <h3 class="uppercase font-semibold">Category</h3>
       <!-- Dropdown for selecting a category -->
       <select v-model="selectedCategory">
@@ -17,7 +17,7 @@
     <!-- Display filtered products based on the selected category -->
     <div
       v-if="filteredProducts.length"
-      class="grid lg:grid-cols-6 md:grid-cols-3 gap-4"
+      class="grid lg:grid-cols-6 md:grid-cols-3 gap-4 container justify-between mb-24"
     >
       <SingleCard
         v-for="product in filteredProducts"
@@ -30,12 +30,14 @@
     <div v-else>
       <p>No products available for the selected category.</p>
     </div>
+    <FooterComponents />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, watch, computed } from "vue";
 import { useProductStore } from "../stores/useProductStore.js";
+import FooterComponents from "@/components/footer/FooterComponents.vue";
 import SingleCard from "../components/Cards/SingleCard.vue";
 
 // State for selected category
