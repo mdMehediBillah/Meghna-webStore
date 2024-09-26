@@ -22,7 +22,7 @@
 
     <!-- Grid displaying filtered new arrivals -->
     <div
-      class="grid lg:grid-cols- md:grid-cols-3 gap-4 container justify-between"
+      class="grid lg:grid-cols-6 md:grid-cols-3 gap-4 container justify-between mb-24"
     >
       <div
         class="col-md-4"
@@ -32,6 +32,7 @@
         <SingleCard :product="product" />
       </div>
     </div>
+    <FooterComponents />
   </div>
 </template>
 
@@ -40,6 +41,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../stores/useProductStore.js";
 import SingleCard from "../components/Cards/SingleCard.vue";
+import FooterComponents from "@/components/footer/FooterComponents.vue";
 
 // Router for navigation and query updates
 const router = useRouter();
