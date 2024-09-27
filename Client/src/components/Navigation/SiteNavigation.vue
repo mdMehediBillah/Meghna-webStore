@@ -81,32 +81,69 @@
       class="flex container items-center gap-8 text-xs font-medium justify-center pt-2 mb-2 flex-wrap"
     >
       <div class="flex items-center gap-2 text-gray-600">
-        <span class="uppercase">Staples</span>
-        <i class="fa-solid fa-chevron-down"></i>
+        <router-link
+          to="/products"
+          class="cursor-pointer hover:underline transition-colors duration-300"
+        >
+          <span class="uppercase hover:text-red-600">All Products</span>
+        </router-link>
       </div>
       <div class="flex items-center gap-2 text-gray-600">
-        <span class="uppercase">Essentials</span>
-        <i class="fa-solid fa-chevron-down"></i>
+        <router-link
+          to="/categories"
+          class="cursor-pointer hover:underline transition-colors duration-300"
+        >
+          <span class="uppercase hover:text-red-600">Categories</span>
+        </router-link>
       </div>
       <div class="flex items-center gap-2 text-gray-600">
-        <span class="uppercase">Fruits & Vegetables</span>
+        <router-link
+          to="/spices"
+          class="cursor-pointer hover:underline transition-colors duration-300"
+        >
+          <span class="uppercase hover:text-red-600">Spices</span>
+        </router-link>
       </div>
       <div class="flex items-center gap-2 text-gray-600">
-        <span class="uppercase">Cool & Frozen</span>
-        <i class="fa-solid fa-chevron-down"></i>
+        <router-link
+          to="/fruits-vegetables"
+          class="cursor-pointer hover:underline transition-colors duration-300"
+        >
+          <span class="uppercase hover:text-red-600">Fruits & Vegetables</span>
+        </router-link>
       </div>
       <div class="flex items-center gap-2 text-gray-600">
-        <span class="uppercase">BestSellers</span>
+        <router-link
+          to="/frozen-products"
+          class="cursor-pointer hover:underline transition-colors duration-300"
+        >
+          <span class="uppercase hover:text-red-600">Frozen Products</span>
+        </router-link>
       </div>
       <div class="flex items-center gap-2 text-gray-600">
-        <span class="uppercase">Save Food</span>
+        <router-link
+          to="/bestSellers"
+          class="cursor-pointer hover:underline transition-colors duration-300"
+        >
+          <span class="uppercase hover:text-red-600">BestSellers</span>
+        </router-link>
+      </div>
+
+      <div class="flex items-center gap-2 text-gray-600">
+        <router-link
+          to="/newArrivals"
+          class="cursor-pointer hover:underline transition-colors duration-300"
+        >
+          <span class="uppercase hover:text-red-600">New Arrivals</span>
+        </router-link>
       </div>
       <div class="flex items-center gap-2 text-gray-600">
-        <span class="uppercase">Home & New</span>
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
-      <div class="flex items-center gap-2 text-gray-600">
-        <span class="uppercase text-red-600">Weekly Deals</span>
+        <router-link
+          to="/offers"
+          class="cursor-pointer hover:underline transition-colors duration-300"
+        >
+          <span class="uppercase hover:text-red-600">Weekly Deals</span>
+        </router-link>
       </div>
     </div>
   </header>

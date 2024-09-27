@@ -39,6 +39,10 @@ import { ref, onMounted, watch, computed } from "vue";
 import { useProductStore } from "../stores/useProductStore.js";
 import FooterComponents from "@/components/footer/FooterComponents.vue";
 import SingleCard from "../components/Cards/SingleCard.vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
+const { id } = route.params;
+console.log(id);
 
 // State for selected category
 const selectedCategory = ref(null);
