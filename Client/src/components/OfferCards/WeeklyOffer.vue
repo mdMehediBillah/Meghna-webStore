@@ -2,7 +2,7 @@
   <div>
     <!-- Header Section -->
     <div class="container mt-10 flex justify-between items-center flex-wrap">
-      <h3 class="font-semibold text-xl py-2 uppercase">Weekly Offers</h3>
+      <h3 class="font-semibold text-xl py-2">Weekly Offers</h3>
       <div class="flex gap-8 items-center">
         <router-link
           to="/offers"
