@@ -20,6 +20,7 @@ export const useProductStore = defineStore("productStore", {
           `${import.meta.env.VITE_API_URL}/api/v1/products` // Use environment variable
         );
         this.products = response.data; // Assuming API returns an array of products
+        // debugger;
       } catch (error) {
         this.error =
           error.response?.data?.message || "Failed to fetch products"; // Detailed error

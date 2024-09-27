@@ -1,3 +1,4 @@
+import AllProductsView from "@/views/AllProductsView.vue";
 import CategoryProductView from "@/views/CategoryProductView.vue";
 import NewArrivalsView from "@/views/NewArrivalsView.vue";
 import UpdateProductView from "@/views/UpdateProductView.vue";
@@ -52,6 +53,12 @@ const routes = [
     name: "collections",
     component: CategoryProductView,
     meta: { title: "Category Products" },
+  },
+  {
+    path: "/products",
+    name: "products",
+    component: AllProductsView,
+    meta: { title: "All Products" },
   },
   {
     path: "/products/:id",
