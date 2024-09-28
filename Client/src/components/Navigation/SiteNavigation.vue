@@ -54,10 +54,23 @@
             class="fa-solid fa-circle-user text-2xl transition ease-in-out delay-125 hover:-translate-y-1 hover:scale-110 duration-300"
           ></i>
         </router-link>
-        <router-link :to="{ name: 'about' }">
-          <i
-            class="fa-solid fa-cart-shopping text-xl transition ease-in-out delay-125 hover:-translate-y-1 hover:scale-110 duration-300"
-          ></i>
+        <!-- Cart Icon with item count -->
+        <router-link :to="{ name: 'cart' }" class="relative">
+          <div class="relative">
+            <!-- Cart Icon -->
+            <i
+              class="fa-solid fa-cart-shopping text-xl text-gray-600 transition ease-in-out delay-125 hover:-translate-y-1 hover:scale-110 duration-300"
+              aria-label="Go to cart"
+            ></i>
+
+            <!-- Cart Item Count -->
+            <span
+              v-if="cartItemCount >= 0"
+              class="text-xs font-semibold absolute top-[-8px] right-[-12px] bg-red-500 text-white rounded-full px-1.5 py-0.5"
+            >
+              {{ cartItemCount }}
+            </span>
+          </div>
         </router-link>
 
         <!-- Add product button -->
@@ -167,6 +180,14 @@ watch(selectedLanguage, (newLang) => {
   console.log("Language changed to:", newLang);
   // Additional logic to handle language change can be added here
 });
+
+// Define the cart item count
+
+import { useCartStore } from "@/stores/cartStore";
+
+const cartStore = useCartStore();
+const cartItems = computed(() => cartStore.cartItems);
+const cartItemCount = computed(() => cartStore.cartItemCount);
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
