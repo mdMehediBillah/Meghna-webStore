@@ -6,9 +6,9 @@ import { createRouter, createWebHistory } from "vue-router";
 
 // Lazy-loaded components
 const HomeView = () => import("../views/HomeView.vue");
-const AboutView = () => import("@/views/AboutView.vue");
+const CartView = () => import("@/views/CartView.vue");
 const WeeklyOffer = () => import("../views/WeeklyOfferView.vue");
-const OfferDetailView = () => import("@/views/OfferDetailView.vue");
+const DetailView = () => import("@/views/DetailView.vue");
 const NotFoundView = () => import("@/views/NotFoundView.vue");
 const AddProductView = () => import("@/views/AddProductView.vue");
 const AddCategoryView = () => import("@/views/AddCategoryView.vue");
@@ -31,9 +31,9 @@ const routes = [
     meta: { title: "Home" },
   },
   {
-    path: "/about",
-    name: "about",
-    component: AboutView,
+    path: "/cart",
+    name: "cart",
+    component: CartView,
     meta: { title: "About Us" },
   },
   {
@@ -63,7 +63,7 @@ const routes = [
   {
     path: "/products/:id",
     name: "productDetails",
-    component: OfferDetailView,
+    component: DetailView,
     meta: { title: "Product Details" },
   },
   {
