@@ -8,7 +8,7 @@
       <ul>
         <li
           v-for="item in cartItems"
-          :key="item.id"
+          :key="item._id"
           class="flex justify-between items-center border-b py-4"
         >
           <!-- Product details -->
@@ -22,7 +22,7 @@
               <h2 class="text-md font-semibold">{{ item.title }}</h2>
 
               <!-- Show remaining stock -->
-              <p class="text-gray-500">
+              <p class="text-gray-500 text-sm mb-1">
                 Only {{ item.stock - item.quantity }} items left
               </p>
 
@@ -58,7 +58,7 @@
                     </span>
                   </div>
                   <div class="flex gap-4 items-center">
-                    <div class="my-2">
+                    <div class="my-1">
                       <span
                         class="text-gray-800 font-semibold bg-gray-100 py-1 px-2 border border-gray-300 rounded-lg"
                       >
@@ -69,14 +69,19 @@
                       <p class="text-gray-700">Quantity: {{ item.quantity }}</p>
                       <div class="flex items-center gap-2">
                         <i
-                          class="fa-solid fa-plus p-2 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300 transition text-xs font-bold"
-                          @click="increaseQuantity(item)"
-                        ></i>
-                        <i
                           class="fa-solid fa-minus p-2 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300 transition text-xs font-bold"
                           @click="decreaseQuantity(item)"
                         ></i>
+                        <i
+                          class="fa-solid fa-plus p-2 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300 transition text-xs font-bold"
+                          @click="increaseQuantity(item)"
+                        ></i>
                       </div>
+                    </div>
+                    <div>
+                      <p class="text-gray-700">
+                        Total: €{{ (size.price * item.quantity).toFixed(2) }}
+                      </p>
                     </div>
                   </div>
                 </li>
@@ -86,7 +91,7 @@
 
           <!-- Remove button -->
           <button
-            @click="removeFromCart(item.id)"
+            @click="removeItem(item._id)"
             class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
           >
             Remove
@@ -122,12 +127,11 @@ const cartItems = computed(() => cartStore.cartItems);
 // Computed property for calculating the total price
 const cartTotal = computed(() => {
   return cartItems.value.reduce((total, item) => {
-    // Calculate total for each size based on quantity and discount if available
     const itemTotal = item.sizes.reduce((sizeTotal, size) => {
       const price = item.offer?.discountPercentage
         ? size.price - (size.price * item.offer.discountPercentage) / 100
         : size.price;
-      return sizeTotal + price * item.quantity; // Assuming the quantity is applied to the item, not size
+      return sizeTotal + price * item.quantity;
     }, 0);
     return total + itemTotal;
   }, 0);
@@ -135,18 +139,21 @@ const cartTotal = computed(() => {
 
 // Function to increase quantity
 const increaseQuantity = (item) => {
-  item.quantity += 1;
+  cartStore.increaseQuantity(item._id); // Call store action
 };
 
 // Function to decrease quantity
 const decreaseQuantity = (item) => {
-  if (item.quantity > 1) {
-    item.quantity -= 1; // Prevent quantity going below 1
-  }
+  cartStore.decreaseQuantity(item._id); // Call store action
 };
 
-// Remove item from the cart
-const removeFromCart = (id) => {
-  cartStore.cartItems = cartStore.cartItems.filter((item) => item.id !== id);
+// Method to remove an item from the cart
+const removeItem = (id) => {
+  console.log("Removing item with ID:", id);
+  if (!id) {
+    console.error("ID is undefined or invalid.");
+    return;
+  }
+  cartStore.removeItemFromCart(id); // Call store action
 };
 </script>
