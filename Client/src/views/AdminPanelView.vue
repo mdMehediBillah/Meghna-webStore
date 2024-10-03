@@ -24,6 +24,7 @@
         <router-link
           to="/admin/products"
           class="text-gray-200 hover:text-rose-300 mb-2 ml-4 inline-block border-b-2 pb-2 border-gray-500 hover:border-rose-300 px-2 mt-12"
+          active-class="border-rose-300 text-rose-300"
         >
           Manage Products
         </router-link>
@@ -31,6 +32,7 @@
         <router-link
           to="/admin/adminCategories"
           class="text-gray-200 hover:text-rose-300 mb-2 ml-4 inline-block border-b-2 pb-2 border-gray-500 hover:border-rose-300 px-2"
+          active-class="border-rose-300 text-rose-300"
         >
           Manage Categories
         </router-link>
@@ -38,6 +40,7 @@
         <router-link
           to="/admin/orders"
           class="text-gray-200 hover:text-rose-300 mb-2 ml-4 inline-block border-b-2 pb-2 border-gray-500 hover:border-rose-300 px-2"
+          active-class="border-rose-300 text-rose-300"
         >
           Manage Orders
         </router-link>
