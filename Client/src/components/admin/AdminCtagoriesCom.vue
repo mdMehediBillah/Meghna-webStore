@@ -60,13 +60,15 @@
 
           <!-- Edit and Delete Buttons -->
           <div class="mt-4 flex space-x-2">
+            <!-- Edit Button: Opens the update modal -->
             <button
               class="fa-solid fa-pen-to-square text-gray-600 text-sm py-1 px-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
-              @click="updateCategory(category._id)"
+              @click="openUpdateModal(category)"
               aria-label="Edit category"
               title="Edit category"
             ></button>
 
+            <!-- Delete Button -->
             <button
               class="fa-solid fa-trash text-red-600 text-sm py-1 px-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
               @click="deleteCategory(category._id)"
@@ -85,25 +87,25 @@
     >
       No categories available.
     </div>
+
     <!-- Add Category Modal -->
-    <CategoryUpdateCom :isVisible="showModal" :closeModal="closeModal" />
+    <CategoryCreateCom :isVisible="showModal" :closeModal="closeModal" />
+
+    <!-- Update Category Modal -->
+    <CategoryUpdateCom
+      :isVisible="showUpdateModal"
+      :closeModal="closeUpdateModal"
+      :category="selectedCategory"
+    />
   </section>
 </template>
 
 <script setup>
 import CategoryUpdateCom from "./CategoryUpdateCom.vue";
-import { useRouter } from "vue-router";
+import CategoryCreateCom from "./CategoryCreateCom.vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
-const router = useRouter();
-
-const showModal = ref(false);
-
-// Function to close the modal
-const closeModal = () => {
-  showModal.value = false;
-};
 const url = import.meta.env.VITE_API_URL; // API URL
 
 // Data variables
@@ -111,6 +113,13 @@ const categories = ref([]);
 const filteredCategories = ref([]);
 const isLoading = ref(false);
 const error = ref(null);
+
+// Modal visibility flags
+const showModal = ref(false);
+const showUpdateModal = ref(false);
+
+// Selected category for update
+const selectedCategory = ref(null);
 
 // Search query
 const searchQuery = ref("");
@@ -157,9 +166,19 @@ const deleteCategory = async (id) => {
   }
 };
 
-// Update category
-const updateCategory = (id) => {
-  router.push(`/category/update/${id}`);
+// Open update modal and set selected category
+const openUpdateModal = (category) => {
+  selectedCategory.value = category; // Set selected category to be updated
+  showUpdateModal.value = true; // Open update modal
+};
+
+// Close modals
+const closeModal = () => {
+  showModal.value = false;
+};
+
+const closeUpdateModal = () => {
+  showUpdateModal.value = false;
 };
 
 // Fetch categories when the component is mounted
