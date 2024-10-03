@@ -30,6 +30,7 @@
           <option value="bestSeller">Best Seller</option>
         </select>
       </div>
+
       <!-- Add Product Button -->
       <router-link
         to="/product/add"
@@ -133,7 +134,7 @@
           <div class="mt-4 flex space-x-2">
             <button
               class="fa-solid fa-pen-to-square text-gray-600 text-sm py-1 px-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
-              @click="router.push(`/product/update/${product._id}`)"
+              @click="openUpdateModal(product)"
               aria-label="Edit offer"
               title="Edit offer"
             ></button>
@@ -153,16 +154,23 @@
     <div v-if="!isLoading && filteredProducts.length === 0" class="text-center">
       No products available.
     </div>
+    <ProductUpdateCom
+      :isVisible="showUpdateModal"
+      :closeModal="closeUpdateModal"
+      :product="selectedProduct"
+    />
   </section>
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import ProductUpdateCom from "./ProductUpdateCom.vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
-const router = useRouter();
 const url = import.meta.env.VITE_API_URL; // API URL
+
+// Modal visibility flags
+const showUpdateModal = ref(false);
 
 // Data variables
 const products = ref([]);
@@ -173,6 +181,9 @@ const error = ref(null);
 // Search and filter options
 const searchQuery = ref("");
 const filterOption = ref("all");
+
+// Selected product for updating
+const selectedProduct = ref(null); // This was missing
 
 // Fetch products from API
 const fetchProducts = async () => {
@@ -209,12 +220,10 @@ const filterProducts = () => {
       (product) => product.offer?.discountPercentage > 0
     );
   } else if (filterOption.value === "bestSeller") {
-    // Assuming "best" products have some identifiable property like 'isBestSeller'
     filteredProducts.value = products.value.filter(
       (product) => product.isBestSeller
     );
   } else if (filterOption.value === "newProducts") {
-    // Assuming "new" products have some identifiable property like 'isNew'
     filteredProducts.value = products.value.filter(
       (product) => product.isNewArrival
     );
@@ -237,6 +246,17 @@ const deleteProduct = async (id) => {
       alert("An error occurred while deleting the product. Please try again.");
     }
   }
+};
+
+// Open update modal and set selected product
+const openUpdateModal = (product) => {
+  selectedProduct.value = product; // Set selected product to be updated
+  showUpdateModal.value = true; // Open update modal
+};
+
+// Close the update modal
+const closeUpdateModal = () => {
+  showUpdateModal.value = false; // Close the update modal
 };
 
 // Fetch products when component is mounted

@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-gray-500">
+  <section class="bg-gray-800">
     <!-- Admin Panel Header -->
     <header class="container flex justify-between">
       <!-- Logo -->

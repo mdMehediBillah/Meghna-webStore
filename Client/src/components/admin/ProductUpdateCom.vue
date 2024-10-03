@@ -1,18 +1,18 @@
 <template>
   <div v-if="isVisible" class="modal-overlay">
     <div class="modal-content">
-      <h3 class="text-lg font-semibold text-center mb-6">Update Category</h3>
-      <form @submit.prevent="updateCategory">
+      <h3 class="text-lg font-semibold text-center mb-6">Update Product</h3>
+      <form @submit.prevent="updateProduct">
         <div class="mb-4">
           <label
-            for="categoryName"
+            for="productName"
             class="block text-sm font-medium text-gray-700"
-            >Category Name</label
+            >Product Name</label
           >
           <input
             type="text"
-            id="categoryName"
-            v-model="categoryName"
+            id="productName"
+            v-model="productName"
             class="mt-1 p-2 block w-full border rounded shadow-sm focus:ring focus:border-blue-500"
             required
           />
@@ -55,19 +55,19 @@ import { ref, watch } from "vue";
 import axios from "axios";
 
 // Define props for the component
-const props = defineProps(["isVisible", "closeModal", "category"]);
+const props = defineProps(["isVisible", "closeModal", "product"]);
 
-// Define local state variables for the category name and image
-const categoryName = ref("");
+// Define local state variables for the product name and image
+const productName = ref("");
 const imageUrl = ref("");
 
-// Watch the `category` prop and update local state when it changes
+// Watch the `product` prop and update local state when it changes
 watch(
-  () => props.category,
-  (newCategory) => {
-    if (newCategory) {
-      categoryName.value = newCategory.name || "";
-      imageUrl.value = newCategory.image || "";
+  () => props.product,
+  (newProduct) => {
+    if (newProduct) {
+      productName.value = newProduct.brandName || "";
+      imageUrl.value = newProduct.image || "";
     }
   },
   { immediate: true }
@@ -76,25 +76,25 @@ watch(
 // API URL
 const url = import.meta.env.VITE_API_URL || "http://localhost:8090";
 
-// Function to handle updating the category
-const updateCategory = async () => {
+// Function to handle updating the product
+const updateProduct = async () => {
   try {
-    const updatedCategory = {
-      name: categoryName.value,
+    const updatedProduct = {
+      brandName: productName.value,
       image: imageUrl.value,
     };
 
-    // Send a PUT request to update the category
+    // Send a PUT request to update the product
     await axios.put(
-      `${url}/api/v1/categories/${props.category._id}`,
-      updatedCategory
+      `${url}/api/v1/products/${props.product._id}`,
+      updatedProduct
     );
 
-    alert("Category updated successfully");
+    alert("Product updated successfully");
     props.closeModal(); // Close the modal after a successful update
   } catch (err) {
-    console.error("Error updating category:", err);
-    alert("Failed to update category.");
+    console.error("Error updating product:", err);
+    alert("Failed to update product.");
   }
 };
 </script>

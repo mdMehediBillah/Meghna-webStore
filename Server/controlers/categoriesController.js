@@ -59,6 +59,8 @@ export const getCategoryById = async (req, res) => {
 // @route PUT /api/v1/categories/:id
 // @access Private (requires authentication, to be implemented later)
 export const updateCategory = async (req, res) => {
+  const { id } = req.params;
+  // console.log("Updated category id", id);
   try {
     // Validate request body
     const { name, image } = req.body;
@@ -69,7 +71,7 @@ export const updateCategory = async (req, res) => {
     }
 
     // Check if category exists
-    const category = await Category.findById(req.params.id);
+    const category = await Category.findById(id);
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
     }
