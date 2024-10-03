@@ -96,11 +96,11 @@
         </router-link>
 
         <!-- Add product button -->
-        <router-link :to="{ name: 'addProduct' }">
+        <!-- <router-link :to="{ name: 'addProduct' }">
           <div>
             <span class="cursor-pointer">Add</span>
           </div>
-        </router-link>
+        </router-link> -->
 
         <!-- Add category button
         <router-link :to="{ name: 'addCategory' }">

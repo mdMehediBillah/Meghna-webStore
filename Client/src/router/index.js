@@ -40,6 +40,11 @@ const routes = [
     component: AdminPanelView,
     children: [
       {
+        path: "",
+        name: "adminProducts",
+        component: AdAllProdctsCom,
+      },
+      {
         path: "products",
         name: "adminProducts",
         component: AdAllProdctsCom,
