@@ -1,3 +1,7 @@
+import AdAllProdctsCom from "@/components/admin/AdAllProdctsCom.vue";
+import AdminCtagoriesCom from "@/components/admin/AdminCtagoriesCom.vue";
+import CategoryUpdateCom from "@/components/admin/CategoryUpdateCom.vue";
+import AdminPanelView from "@/views/AdminPanelView.vue";
 import AllProductsView from "@/views/AllProductsView.vue";
 import CategoryProductView from "@/views/CategoryProductView.vue";
 import NewArrivalsView from "@/views/NewArrivalsView.vue";
@@ -29,6 +33,29 @@ const routes = [
     name: "home",
     component: HomeView,
     meta: { title: "Home" },
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: AdminPanelView,
+    children: [
+      {
+        path: "products",
+        name: "adminProducts",
+        component: AdAllProdctsCom,
+      },
+      {
+        path: "adminCategories",
+        name: "adminCategories",
+        component: AdminCtagoriesCom,
+      },
+      {
+        path: "categoryUpdate",
+        name: "categoryUpdate",
+        component: CategoryUpdateCom,
+      },
+    ],
+    meta: { title: "Admin Panel" },
   },
   {
     path: "/cart",

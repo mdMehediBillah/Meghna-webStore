@@ -49,11 +49,33 @@
         </div>
 
         <!-- User and Cart icons -->
-        <router-link :to="{ name: 'home' }">
+        <div class="relative">
+          <!-- User Icon with Hover Effects -->
           <i
-            class="fa-solid fa-circle-user text-2xl transition ease-in-out delay-125 hover:-translate-y-1 hover:scale-110 duration-300"
+            class="fa-solid fa-circle-user text-2xl transition ease-in-out delay-125 hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer"
+            @click="showDropdown = !showDropdown"
           ></i>
-        </router-link>
+
+          <!-- Dropdown for Login and Admin -->
+          <div
+            v-if="showDropdown"
+            class="absolute bg-gray-200 px-2 py-1 mt-2 rounded shadow-md z-50 bottom-[-72px] right-[-20px]"
+            @mouseenter="showDropdown = true"
+            @mouseleave="showDropdown = false"
+          >
+            <span
+              class="cursor-pointer block hover:bg-rose-300 p-1 rounded font-semibold"
+              >Login</span
+            >
+            <router-link :to="{ name: 'admin' }">
+              <span
+                class="cursor-pointer block hover:bg-rose-300 p-1 rounded font-semibold"
+                >Admin</span
+              >
+            </router-link>
+          </div>
+        </div>
+
         <!-- Cart Icon with item count -->
         <router-link :to="{ name: 'cart' }" class="relative">
           <div class="relative">
@@ -80,12 +102,12 @@
           </div>
         </router-link>
 
-        <!-- Add category button -->
+        <!-- Add category button
         <router-link :to="{ name: 'addCategory' }">
           <div>
             <span class="cursor-pointer">Category</span>
           </div>
-        </router-link>
+        </router-link> -->
       </div>
     </nav>
 
@@ -188,6 +210,10 @@ import { useCartStore } from "@/stores/cartStore";
 const cartStore = useCartStore();
 const cartItems = computed(() => cartStore.cartItems);
 const cartItemCount = computed(() => cartStore.cartItemCount);
+
+// Define a reactive user property to show/hide the user dropdown
+
+const showDropdown = ref(false); // Controls visibility of the user dropdown
 </script>
 
 <style scoped></style>
