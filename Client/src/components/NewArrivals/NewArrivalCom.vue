@@ -57,38 +57,49 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { useProductStore } from "../../stores/useProductStore.js";
+import { ref, computed, watch } from "vue";
 import SingleCard from "../Cards/SingleCard.vue";
 
-const currentPage = ref(1); // Start at page 1
-const productsPerPage = ref(6); // Number of offers per page
-
-// Use the product store
-const productStore = useProductStore();
-
-// Destructure the state and getters
-const { fetchProducts, isLoading, error, newArrivals } = productStore;
-// console.log(newArrivals);
-
-// Fetch products when the component is mounted
-onMounted(() => {
-  fetchProducts();
+// Define props
+const props = defineProps({
+  newArrivals: {
+    type: Array,
+    required: true, // Expecting a list of products as an array
+  },
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
+  error: {
+    type: String,
+    default: null,
+  },
 });
-// console.log(newArrivals);
+
+// Pagination state
+const currentPage = ref(1); // Start at page 1
+const productsPerPage = ref(6); // Number of products per page
+
+// Watch for changes in newArrivals prop and reset the page if necessary
+watch(
+  () => props.newArrivals,
+  () => {
+    currentPage.value = 1; // Reset to page 1 if new arrivals change
+  }
+);
 
 // Computed property to calculate the total number of pages
 const totalPages = computed(() => {
-  return Math.ceil(newArrivals.length / productsPerPage.value);
+  return Math.ceil(props.newArrivals.length / productsPerPage.value);
 });
 
 // Computed property to get the paginated new arrivals
 const paginatedNewArrivals = computed(() => {
   const start = (currentPage.value - 1) * productsPerPage.value;
-  return newArrivals.slice(start, start + productsPerPage.value);
+  return props.newArrivals.slice(start, start + productsPerPage.value);
 });
 
-// Computed property for transform style
+// Computed property for transform style (carousel-like movement)
 const transformStyle = computed(() => {
   return `transform: translateX(-${(currentPage.value - 1) * 100}%)`;
 });
@@ -109,5 +120,5 @@ const prevPage = () => {
 </script>
 
 <style scoped>
-/* Add scoped styles here if needed */
+/* Add scoped styles here if necessary */
 </style>

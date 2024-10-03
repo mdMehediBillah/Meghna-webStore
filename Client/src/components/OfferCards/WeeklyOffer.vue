@@ -38,12 +38,12 @@
         class="flex transition-transform duration-500 ease-in-out"
         :style="{ transform: `translateX(-${(currentPage - 1) * 100}%)` }"
       >
-        <!-- Loop through all new arrivals -->
+        <!-- Loop through all discounted products -->
         <div
           class="col-md-4 w-full flex-shrink-0 px-2"
-          v-for="product in paginatedNewArrivals"
+          v-for="product in paginatedDiscountedProducts"
           :key="product._id"
-          style="flex-basis: calc(100% / 6)"
+          :style="{ flexBasis: 'calc(100% / 6)' }"
         >
           <SingleCard :product="product" />
         </div>
@@ -57,34 +57,45 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { useProductStore } from "../../stores/useProductStore.js";
+import { ref, computed, watch } from "vue";
 import SingleCard from "../Cards/SingleCard.vue";
+
+// Define props
+const props = defineProps({
+  discountedProducts: {
+    type: Array,
+    required: true, // Expecting a list of products as an array
+  },
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
+  error: {
+    type: String,
+    default: null,
+  },
+});
 
 const currentPage = ref(1); // Start at page 1
 const productsPerPage = ref(6); // Number of offers per page
 
-// Use the product store
-const productStore = useProductStore();
-
-// Destructure the state and getters
-const { fetchProducts, isLoading, error, discountedProducts } = productStore;
-console.log(discountedProducts);
-
-// Fetch products when the component is mounted
-onMounted(() => {
-  fetchProducts();
-});
+// Watch for changes in discounted products and reset pagination
+watch(
+  () => props.discountedProducts,
+  () => {
+    currentPage.value = 1; // Reset to page 1 if products change
+  }
+);
 
 // Computed property to calculate the total number of pages
 const totalPages = computed(() => {
-  return Math.ceil(discountedProducts.length / productsPerPage.value);
+  return Math.ceil(props.discountedProducts.length / productsPerPage.value);
 });
 
-// Computed property to get the paginated new arrivals
-const paginatedNewArrivals = computed(() => {
+// Computed property to get the paginated discounted products
+const paginatedDiscountedProducts = computed(() => {
   const start = (currentPage.value - 1) * productsPerPage.value;
-  return discountedProducts.slice(start, start + productsPerPage.value);
+  return props.discountedProducts.slice(start, start + productsPerPage.value);
 });
 
 // Function to move to the next page
