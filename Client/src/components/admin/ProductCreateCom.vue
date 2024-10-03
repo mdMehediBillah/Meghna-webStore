@@ -1,8 +1,10 @@
 <template>
   <div v-if="isVisible" class="modal-overlay">
     <div class="modal-content w-8/12">
-      <h3 class="text-lg font-semibold text-center mb-6">Update Product</h3>
-      <form @submit.prevent="updateProduct">
+      <h3 class="text-2xl font-semibold text-center mb-6 text-gray-700">
+        Add Product
+      </h3>
+      <form @submit.prevent="addProduct">
         <div class="flex gap-4 w-full justify-between">
           <div class="w-full">
             <!-- Product Details -->
@@ -15,8 +17,8 @@
               </label>
               <input
                 type="text"
-                id="productName"
-                v-model="productName"
+                id="brandName"
+                v-model="form.brandName"
                 placeholder="Enter product name"
                 class="mt-1 p-2 block w-full border rounded shadow-sm outline-none focus:ring focus:border-blue-500"
                 required
@@ -25,15 +27,15 @@
 
             <div class="mb-4">
               <label
-                for="productTitle"
+                for="title"
                 class="block text-sm font-medium text-gray-700"
               >
                 Product Title
               </label>
               <input
                 type="text"
-                id="productTitle"
-                v-model="productTitle"
+                id="title"
+                v-model="form.title"
                 placeholder="Enter product title"
                 class="mt-1 p-2 block w-full border rounded shadow-sm outline-none focus:ring focus:border-blue-500"
                 required
@@ -42,26 +44,28 @@
 
             <div class="mb-4">
               <label
-                for="productDescription"
+                for="description"
                 class="block text-sm font-medium text-gray-700"
               >
                 Description
               </label>
               <textarea
-                id="productDescription"
-                v-model="productDescription"
+                id="description"
+                v-model="form.description"
                 placeholder="Enter product description"
                 class="mt-1 p-2 block w-full border rounded shadow-sm outline-none focus:ring focus:border-blue-500"
+                required
               ></textarea>
             </div>
 
-            <!-- Category -->
+            <!-- Product Category -->
             <div class="mb-4">
               <label
                 for="category"
                 class="block text-sm font-medium text-gray-700"
-                >Category</label
               >
+                Category
+              </label>
               <select
                 id="category"
                 v-model="form.category"
@@ -106,7 +110,7 @@
                 id="stock"
                 v-model.number="form.stock"
                 placeholder="Enter stock quantity"
-                class="w-full p-2 border rounded"
+                class="w-full p-2 border rounded mt-1 p-2 block w-full border rounded shadow-sm outline-none focus:ring focus:border-blue-500"
                 required
               />
             </div>
@@ -131,12 +135,12 @@
                     type="number"
                     v-model.number="size.value"
                     placeholder="Size"
-                    class="p-2 border rounded w-full"
+                    class="mt-1 p-2 block w-full border rounded shadow-sm outline-none focus:ring focus:border-blue-500"
                     required
                   />
                   <select
                     v-model="size.unit"
-                    class="p-2 border rounded w-24"
+                    class="mt-1 p-2 block w-full border rounded shadow-sm outline-none focus:ring focus:border-blue-500"
                     required
                   >
                     <option value="" disabled>Unit</option>
@@ -149,7 +153,7 @@
                     step="0.01"
                     v-model.number="size.price"
                     placeholder="Price (euro)"
-                    class="p-2 border rounded w-full"
+                    class="mt-1 p-2 block w-full border rounded shadow-sm outline-none focus:ring focus:border-blue-500"
                     required
                     min="0"
                   />
@@ -214,7 +218,7 @@
 
             <!-- Offer Details -->
             <div class="mb-4">
-              <h3 class="text-lg font-semibold mb-2">Offer Details</h3>
+              <h3 class="text-md font-semibold mb-2">Offer Details</h3>
               <div class="flex mb-4">
                 <div class="w-full">
                   <label
@@ -249,34 +253,34 @@
                   />
                 </div>
               </div>
+
               <div class="flex justify-between gap-2">
                 <div class="mb-4 w-full">
                   <label
                     for="offerStartDate"
                     class="block text-sm font-medium text-gray-700"
                   >
-                    Offer Start Date
+                    Start Date
                   </label>
                   <input
                     type="date"
                     id="offerStartDate"
                     v-model="form.offer.startDate"
-                    class="w-full p-2 border rounded"
+                    class="mt-1 p-2 block w-full border rounded shadow-sm outline-none focus:ring focus:border-blue-500"
                   />
                 </div>
-
                 <div class="mb-4 w-full">
                   <label
                     for="offerEndDate"
                     class="block text-sm font-medium text-gray-700"
                   >
-                    Offer End Date
+                    End Date
                   </label>
                   <input
                     type="date"
                     id="offerEndDate"
                     v-model="form.offer.endDate"
-                    class="w-full p-2 border rounded"
+                    class="mt-1 p-2 block w-full border rounded shadow-sm outline-none focus:ring focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -285,7 +289,7 @@
         </div>
 
         <!-- Buttons -->
-        <div class="flex justify-end gap-2 pt-4">
+        <div class="flex justify-end gap-1 mt-2">
           <button
             type="button"
             @click="closeModal"
@@ -295,9 +299,9 @@
           </button>
           <button
             type="submit"
-            class="bg-blue-500 text-white px-12 py-2 rounded hover:bg-blue-600"
+            class="bg-blue-500 text-white px-8 py-2 rounded hover:bg-blue-600"
           >
-            Update product
+            Add Product
           </button>
         </div>
       </form>
@@ -309,18 +313,30 @@
 import { onMounted, onBeforeUnmount, ref, watch } from "vue";
 import axios from "axios";
 
-const props = defineProps(["isVisible", "closeModal", "product"]);
+const props = defineProps(["isVisible", "closeModal"]);
 
-const categories = ref([]);
 const sizeUnits = ["kg", "g", "ml", "L"]; // Corrected to uppercase "L"
-
-// Base API URL
-const url = import.meta.env.VITE_API_URL;
 
 // Form data
 const productName = ref("");
 const productTitle = ref("");
 const productDescription = ref("");
+
+// Base API URL
+const url = import.meta.env.VITE_API_URL;
+
+// Categories options
+const categories = ref([]);
+
+// Fetch categories from API
+const fetchCategories = async () => {
+  try {
+    const response = await axios.get(`${url}/api/v1/categories`);
+    categories.value = response.data.categories || response.data; // Adjust based on API response structure
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+};
 
 const form = ref({
   brandName: "",
@@ -342,54 +358,6 @@ const form = ref({
   },
 });
 
-const fetchCategories = async () => {
-  try {
-    const response = await axios.get(`${url}/api/v1/categories`);
-    categories.value = response.data;
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-  }
-};
-
-// Watch the product prop for changes and populate form data
-watch(
-  () => props.product,
-  (newProduct) => {
-    if (newProduct) {
-      productName.value = newProduct.brandName || "";
-      productTitle.value = newProduct.title || "";
-      productDescription.value = newProduct.description || "";
-      form.value.category = newProduct.category || "";
-      form.value.image = newProduct.image || "";
-      form.value.stock = newProduct.stock || 0;
-      form.value.offer = newProduct.offer || {
-        discountPercentage: 0,
-        startDate: "",
-        endDate: "",
-      };
-      form.value.sizes = newProduct.sizes || [];
-      form.value.isNewArrival = newProduct.isNewArrival || false;
-      form.value.isWeeklyOffer = newProduct.isWeeklyOffer || false;
-      form.value.isVegan = newProduct.isVegan || false;
-      form.value.isLactosFree = newProduct.isLactosFree || false;
-      form.value.isGlutenFree = newProduct.isGlutenFree || false;
-      form.value.isBestSeller = newProduct.isBestSeller || false;
-    }
-  },
-  { immediate: true }
-);
-
-watch(
-  () => props.isVisible,
-  (newVal) => {
-    if (newVal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-  }
-);
-
 const addSize = () => {
   form.value.sizes.push({ value: "", unit: "", price: 0 });
 };
@@ -405,45 +373,83 @@ const calculateDiscountedPrice = () => {
   return originalPrice - (originalPrice * discountPercentage) / 100;
 };
 
-const updateProduct = async () => {
-  try {
-    const updatedProduct = {
-      brandName: productName.value,
-      title: productTitle.value,
-      description: productDescription.value,
-      category: form.value.category,
-      image: form.value.image,
-      stock: form.value.stock,
-      offer: form.value.offer,
-      sizes: form.value.sizes,
-      isNewArrival: form.value.isNewArrival,
-      isWeeklyOffer: form.value.isWeeklyOffer,
-      isVegan: form.value.isVegan,
-      isLactosFree: form.value.isLactosFree,
-      isGlutenFree: form.value.isGlutenFree,
-      isBestSeller: form.value.isBestSeller,
-    };
+const addProduct = async () => {
+  console.log("Form Data Before Submission:", form.value);
 
-    await axios.put(
-      `${url}/api/v1/products/${props.product._id}`,
-      updatedProduct
-    );
-
-    alert("Product updated successfully");
-    props.closeModal();
-  } catch (err) {
-    console.error("Error updating product:", err);
-    alert("Failed to update product.");
+  // Set discount price if not provided
+  if (form.value.offer.discountprice <= 0) {
+    const lowestPrice = Math.min(...form.value.sizes.map((size) => size.price));
+    form.value.offer.discountprice = lowestPrice;
   }
-};
 
-onBeforeUnmount(() => {
-  document.body.style.overflow = "";
-});
+  // Basic validation
+  if (
+    form.value.offer.discountPercentage < 0 ||
+    form.value.offer.discountPercentage > 100
+  ) {
+    alert("Discount percentage must be between 0 and 100.");
+    return;
+  }
+
+  try {
+    const response = await axios.post(`${url}/api/v1/products`, form.value);
+    console.log("Product created:", response.data);
+    alert("Product created successfully!");
+  } catch (error) {
+    console.error("Error creating product:", error);
+    alert("Failed to create product. Please try again.");
+  }
+  // Reset form after submission
+  resetForm();
+};
 
 onMounted(() => {
   fetchCategories();
+
+  if (props.isVisible) {
+    document.body.style.overflow = "hidden"; // Disable background scroll
+  }
 });
+
+watch(
+  () => props.isVisible,
+  (newVal) => {
+    if (newVal) {
+      document.body.style.overflow = "hidden"; // Disable background scroll when modal is visible
+    } else {
+      document.body.style.overflow = ""; // Enable scroll when modal is closed
+    }
+  }
+);
+
+onBeforeUnmount(() => {
+  document.body.style.overflow = ""; // Ensure scroll is enabled when component is unmounted
+});
+
+// Function to reset the form
+const resetForm = () => {
+  form.value = {
+    brandName: "",
+    title: "",
+    description: "",
+    category: "",
+    sizes: [{ value: "", unit: "", price: 0 }],
+    stock: 1,
+    image: "",
+    isNewArrival: false,
+    isWeeklyOffer: false,
+    isVegan: false,
+    isLactosFree: false,
+    isGlutenFree: false,
+    isBestSeller: false,
+    offer: {
+      discountPercentage: 0,
+      discountprice: 0,
+      startDate: "",
+      endDate: "",
+    },
+  };
+};
 </script>
 
 <style scoped>

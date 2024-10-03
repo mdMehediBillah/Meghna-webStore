@@ -32,12 +32,12 @@
       </div>
 
       <!-- Add Product Button -->
-      <router-link
-        to="/product/add"
-        class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors duration-300"
+      <div
+        @click="showCreateModal = true"
+        class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors duration-300 cursor-pointer"
       >
         Add product
-      </router-link>
+      </div>
     </div>
 
     <!-- Loading state -->
@@ -154,6 +154,12 @@
     <div v-if="!isLoading && filteredProducts.length === 0" class="text-center">
       No products available.
     </div>
+    <!-- Product create Modal -->
+    <ProductCreateCom
+      :isVisible="showCreateModal"
+      :closeModal="closeCreateModal"
+    />
+    <!-- Update Product Modal -->
     <ProductUpdateCom
       :isVisible="showUpdateModal"
       :closeModal="closeUpdateModal"
@@ -164,6 +170,7 @@
 
 <script setup>
 import ProductUpdateCom from "./ProductUpdateCom.vue";
+import ProductCreateCom from "./ProductCreateCom.vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
@@ -171,6 +178,7 @@ const url = import.meta.env.VITE_API_URL; // API URL
 
 // Modal visibility flags
 const showUpdateModal = ref(false);
+const showCreateModal = ref(false);
 
 // Data variables
 const products = ref([]);
@@ -257,6 +265,11 @@ const openUpdateModal = (product) => {
 // Close the update modal
 const closeUpdateModal = () => {
   showUpdateModal.value = false; // Close the update modal
+};
+
+// Close the update modal
+const closeCreateModal = () => {
+  showCreateModal.value = false; // Close the update modal
 };
 
 // Fetch products when component is mounted
