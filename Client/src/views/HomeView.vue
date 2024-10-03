@@ -1,7 +1,7 @@
 <template>
   <main>
     <HomeHero />
-    <WeeklyOffer />
+    <WeeklyOffer :discountedProducts="discountedProducts" />
 
     <!-- Categories Section -->
     <section class="container mt-20">
@@ -40,7 +40,9 @@
       </div>
     </section>
 
-    <NewArrivalCom />
+    <!-- New Arrivals Section -->
+    <NewArrivalCom :newArrivals="newArrivals" />
+
     <AboutUsCom />
     <HomeAboutTextCom />
     <FooterComponents />
@@ -49,7 +51,7 @@
 
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
-import { useProductStore } from "@/stores/useProductStore.js";
+import axios from "axios";
 import HomeDiscoverCom from "@/components/discoverCategories/HomeDiscoverCom.vue";
 import HomeHero from "@/components/HeroSection/HomeHero.vue";
 import WeeklyOffer from "@/components/OfferCards/WeeklyOffer.vue";
@@ -58,25 +60,42 @@ import AboutUsCom from "@/components/aboutUs/AboutUsCom.vue";
 import HomeAboutTextCom from "@/components/aboutUs/HomeAboutTextCom.vue";
 import FooterComponents from "@/components/footer/FooterComponents.vue";
 
-// Use the product store
-const productStore = useProductStore();
-
 // Categories data and state management
 const allCategories = ref([]);
 const isLoading = ref(false);
 const error = ref(null);
+const productsData = ref([]);
+
+// Fetch products from the API
+const fetchProducts = async () => {
+  if (productsData.value.length > 0) return; // Prevent unnecessary fetch
+
+  isLoading.value = true;
+  error.value = null;
+
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/v1/products`
+    );
+    productsData.value = response.data; // Assuming API returns an array of products
+  } catch (err) {
+    error.value = err.response?.data?.message || "Failed to fetch products"; // Detailed error
+    console.error(error.value);
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 // Fetch categories from the API
 const fetchCategories = async () => {
   isLoading.value = true;
-  error.value = null; // Reset error state before fetching
+  error.value = null;
+
   try {
-    const response = await fetch(
+    const response = await axios.get(
       `${import.meta.env.VITE_API_URL}/api/v1/categories`
     );
-    if (!response.ok) throw new Error("Failed to fetch categories");
-    const data = await response.json();
-    allCategories.value = data; // Assuming the response is an array of categories
+    allCategories.value = response.data; // Assuming API returns an array of categories
   } catch (err) {
     error.value = err.message; // Set error message if fetch fails
   } finally {
@@ -84,8 +103,17 @@ const fetchCategories = async () => {
   }
 };
 
-// Fetch products (assumed to be needed elsewhere in the app)
-const { fetchProducts } = productStore;
+// New arrivals computed property
+const newArrivals = computed(() => {
+  return productsData.value.filter((product) => product.isNewArrival);
+});
+
+// Discounted products computed property
+const discountedProducts = computed(() => {
+  return productsData.value.filter(
+    (product) => product.offer && product.offer.discountPercentage > 0
+  );
+});
 
 // Reactive computed property for categories
 const categories = computed(() => allCategories.value);

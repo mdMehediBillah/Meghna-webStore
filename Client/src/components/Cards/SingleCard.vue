@@ -77,25 +77,6 @@
           title="Add to cart"
         ></button>
       </div>
-
-      <!-- Cart, Edit, and Delete Buttons -->
-      <div class="mt-4 flex space-x-2">
-        <!-- Edit Offer Icon -->
-        <button
-          class="fa-solid fa-pen-to-square text-gray-600 text-sm py-1 px-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
-          @click="router.push(`/product/update/${product._id}`)"
-          aria-label="Edit offer"
-          title="Edit offer"
-        ></button>
-
-        <!-- Delete Offer Icon -->
-        <button
-          class="fa-solid fa-trash text-red-600 text-sm py-1 px-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
-          @click="deleteProduct(product._id)"
-          aria-label="Delete offer"
-          title="Delete offer"
-        ></button>
-      </div>
     </div>
   </div>
 </template>
