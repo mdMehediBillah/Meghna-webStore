@@ -28,7 +28,7 @@
 
     <!-- Product Image -->
     <img
-      :src="product.image"
+      :src="product.image || 'default-image.jpg'"
       alt="Product image"
       class="h-36 object-cover rounded-md mx-auto"
       @click="router.push(`/products/${product._id}`)"
@@ -36,11 +36,13 @@
 
     <!-- Offer Details -->
     <div class="mt-4">
-      <h5 class="font-semibold uppercase">{{ product.brandName }}</h5>
-      <p class="line-clamp-1 text-gray-500">{{ product.title }}</p>
+      <h5 class="font-semibold uppercase text-[14px]">
+        {{ product.brandName }}
+      </h5>
+      <p class="line-clamp-1 text-gray-600 text-[14px]">{{ product.title }}</p>
 
       <!-- Size and Price Details -->
-      <div class="flex items-center justify-between mt-2">
+      <div class="flex items-center justify-between mt-1">
         <ul>
           <li v-for="size in product.sizes" :key="size._id" class="flex gap-2">
             <div class="flex items-center">
@@ -70,12 +72,15 @@
             </div>
           </li>
         </ul>
-        <!-- Cart Icon -->
-        <button
-          class="fa-solid fa-cart-shopping text-gray-600 text-sm py-1 px-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
-          aria-label="Add to cart"
-          title="Add to cart"
-        ></button>
+        <!-- Cart Icon & Delete Icon -->
+        <div class="flex gap-2">
+          <button
+            class="fa-solid fa-cart-shopping text-gray-600 text-sm py-1 px-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+            aria-label="Add to cart"
+            title="Add to cart"
+            @click="addItemToCart(product)"
+          ></button>
+        </div>
       </div>
     </div>
   </div>
@@ -84,6 +89,9 @@
 <script setup>
 import { defineProps } from "vue";
 import { useRouter } from "vue-router";
+import { useCartStore } from "@/stores/cartStore";
+
+const cartStore = useCartStore();
 
 // Define the 'product' prop
 const props = defineProps({
@@ -94,27 +102,17 @@ const props = defineProps({
 });
 
 const router = useRouter();
-const url = import.meta.env.VITE_API_URL; // API URL
 
-// Function to delete the product
-const deleteProduct = async (id) => {
-  if (confirm("Are you sure you want to delete this product?")) {
-    try {
-      const response = await fetch(`${url}/api/v1/products/${id}`, {
-        method: "DELETE",
-      });
+// Method to add product to the cart
+const addItemToCart = (item) => {
+  const existingItem = cartStore.cartItems.find(
+    (cartItem) => cartItem._id === item._id
+  );
 
-      if (response.ok) {
-        alert("Product deleted successfully");
-        router.go(); // Refresh the page
-      } else {
-        const errorData = await response.json();
-        alert(`Failed to delete product: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error("Error deleting the product: ", error);
-      alert("An error occurred while deleting the product. Please try again.");
-    }
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cartStore.cartItems.push({ ...item, quantity: 1 });
   }
 };
 </script>
