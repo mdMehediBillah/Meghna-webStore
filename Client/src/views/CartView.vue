@@ -3,7 +3,7 @@
     <h1 class="text-2xl font-bold mb-4">Your Shopping Cart</h1>
 
     <!-- Check if the cart has items -->
-    <div v-if="cartItems.length > 0">
+    <div v-if="cartItems.length > 0" class="flex gap-4 justify-between">
       <!-- Display list of cart items -->
       <ul>
         <li
@@ -19,12 +19,7 @@
               class="w-24 h-24 object-cover rounded-md relative"
             />
             <div>
-              <h2 class="text-md font-semibold">{{ item.title }}</h2>
-
-              <!-- Show remaining stock -->
-              <p class="text-gray-500 text-sm mb-1">
-                Only {{ item.stock - item.quantity }} items left
-              </p>
+              <h2 class="text-md font-semibold mb-1">{{ item.title }}</h2>
 
               <ul>
                 <li
@@ -83,27 +78,93 @@
                         Total: €{{ (size.price * item.quantity).toFixed(2) }}
                       </p>
                     </div>
+                    <!-- Remove button -->
+                    <div>
+                      <i
+                        class="fa-solid fa-trash p-2 rounded-full bg-red-200 cursor-pointer hover:bg-red-500 transition text-xs"
+                        @click="removeItem(item._id)"
+                      ></i>
+                    </div>
                   </div>
                 </li>
               </ul>
             </div>
           </div>
-
-          <!-- Remove button -->
-          <button
-            @click="removeItem(item._id)"
-            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
-          >
-            Remove
-          </button>
         </li>
       </ul>
 
-      <!-- Total price -->
-      <div class="mt-6 text-right">
-        <h3 class="text-lg font-semibold">
-          Total: €{{ cartTotal.toFixed(2) }}
-        </h3>
+      <div class="min-w-[360px]">
+        <!-- Shipping status text -->
+        <p
+          class="text-sm px-4 py-1 rounded text-center"
+          :class="progressPercentage >= 100 ? 'text-cyan-600' : 'text-gray-600'"
+        >
+          {{
+            progressPercentage >= 100
+              ? "Free shipping unlocked!"
+              : `Spend €${(40 - cartTotal).toFixed(2)} more for free shipping`
+          }}
+        </p>
+        <div class="w-full bg-gray-300 rounded h-2 mt-1">
+          <!-- Progress bar -->
+          <div
+            class="h-2 rounded"
+            :style="{ width: `${progressPercentage}%` }"
+            :class="progressPercentage >= 100 ? 'bg-cyan-500' : 'bg-red-500'"
+          ></div>
+        </div>
+
+        <!-- Cart Summary -->
+        <ul class="bg-gray-700 p-3 rounded shadow-md border-2 text-gray-50">
+          <li
+            v-for="item in cartItems"
+            :key="item._id"
+            class="flex justify-between border-b py-1 gap-4"
+          >
+            <div class="flex gap-4">
+              <h2 class="text-[16px] mb-1">{{ item.title }}</h2>
+            </div>
+            <div v-for="size in item.sizes" :key="size._id">
+              <p class="font-semibold">
+                €{{ (size.price * item.quantity).toFixed(2) }}
+              </p>
+            </div>
+          </li>
+
+          <div
+            class="flex gap-4 justify-between mt-6 text-yellow-300 font-semibold"
+          >
+            <h2 class="text-[16px] mb-1">Product Cost</h2>
+            <p class="">€{{ cartTotal.toFixed(2) }}</p>
+          </div>
+
+          <div class="flex gap-4 justify-between mt-2">
+            <h2 class="text-[16px] mb-1">Shipping Cost</h2>
+            <p class="font-semibold">€{{ shippingCost.toFixed(2) }}</p>
+          </div>
+          <p
+            class="text-sm bg-cyan-800 px-4 py-1 rounded text-center"
+            :class="
+              shippingCost > 0
+                ? 'bg-yellow-100 text-gray-600'
+                : 'bg-green-300 text-gray-800'
+            "
+          >
+            {{
+              shippingCost > 0
+                ? "Free shipping over 40 euro purchase"
+                : "Free shipping"
+            }}
+          </p>
+        </ul>
+
+        <!-- Total price -->
+        <div
+          class="mt-4 text-right text-lg font-semibold bg-rose-600 px-2 py-1 text-gray-50 rounded cursor-pointer hover:bg-green-600 transition flex justify-between items-center"
+        >
+          <h3 class="">Total Cost:</h3>
+          <h3>€{{ (cartTotal + shippingCost).toFixed(2) }}</h3>
+        </div>
       </div>
     </div>
 
@@ -156,4 +217,17 @@ const removeItem = (id) => {
   }
   cartStore.removeItemFromCart(id); // Call store action
 };
+
+// Computed property to conditionally add shipping cost
+const shippingCost = computed(() => {
+  return cartTotal.value >= 40 ? 0 : 6.99; // No shipping cost for orders above €40
+});
+
+// Define free shipping threshold
+const freeShippingThreshold = 40;
+
+// Calculate the progress percentage toward free shipping
+const progressPercentage = computed(() => {
+  return Math.min((cartTotal.value / freeShippingThreshold) * 100, 100);
+});
 </script>
