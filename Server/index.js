@@ -8,7 +8,7 @@ dotenv.config(); // Load environment variables
 const app = express(); // Initialize the Express app
 
 // Use CORS middleware
-app.use(cors({ origin: "http://localhost:5173" })); // Change to cors() for all origins if needed
+app.use(cors({ origin: "*" })); // Change to cors() for all origins if needed
 
 app.use(express.json()); // Parse JSON request bodies
 
