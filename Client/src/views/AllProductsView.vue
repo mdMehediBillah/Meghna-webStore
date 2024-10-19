@@ -1,5 +1,20 @@
 <template>
   <section>
+    <div
+      class="container mx-auto bg-slate-500 flex justify-center p-4 mt-4 rounded-lg"
+    >
+      <div class="flex flex-col py-12">
+        <div class="rotate-[-10deg]">
+          <span
+            class="text-3xl font-semibold text-gray-50 bg-green-600 px-2 py-1 rounded-lg"
+            >All Products</span
+          >
+        </div>
+        <span class="z-20 pt-6 text-slate-100">
+          Explore our wide range of products.
+        </span>
+      </div>
+    </div>
     <!-- Header Section -->
     <div class="container mx-auto">
       <div class="mt-10 flex justify-between items-center flex-wrap">
