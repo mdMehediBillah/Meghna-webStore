@@ -1,19 +1,20 @@
 <template>
   <div>
     <div
-      class="container mx-auto bg-slate-500 flex justify-center p-4 mt-4 rounded-lg"
+      class="container mx-auto bg-rose-600 flex justify-center p-4 mt-4 rounded-lg"
     >
-      <div class="flex flex-col py-12">
+      <div class="flex flex-col py-12 items-center">
         <div class="rotate-[-10deg]">
           <span
-            class="text-3xl font-semibold text-yellow-200 bg-red-500 px-2 py-1 rounded-lg"
+            class="text-3xl font-semibold text-slate-600 bg-yellow-300 px-3 py-1 rounded-lg"
             >Weekly Offer</span
           >
         </div>
-        <span class="z-20 pt-6 text-slate-100">
-          Up to 50% off on selected items. <br />
-          Offers valid from {{ startOfWeek }} -
-          {{ endOfWeek }}
+        <span class="z-20 pt-8 text-slate-100">
+          Up to 50% off on selected items. Valid from:
+          <span class="pr-2 font-semibold text-yellow-200">
+            {{ startOfWeek }} - {{ endOfWeek }}</span
+          >
         </span>
       </div>
     </div>

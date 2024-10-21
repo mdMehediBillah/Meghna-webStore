@@ -1,5 +1,20 @@
 <template>
   <div>
+    <div
+      class="container mx-auto bg-cyan-600 flex justify-center p-4 mt-4 rounded-lg"
+    >
+      <div class="flex flex-col py-12">
+        <div class="rotate-[-10deg]">
+          <span
+            class="text-3xl font-semibold text-slate-800 bg-yellow-300 px-2 py-1 rounded-lg"
+            >New Arrivals</span
+          >
+        </div>
+        <span class="z-20 pt-6 text-slate-100">
+          Explore our latest products.
+        </span>
+      </div>
+    </div>
     <div class="container mt-10 flex justify-between items-center flex-wrap">
       <h3 class="font-semibold text-xl py-2 uppercase">New Arrivals</h3>
       <!-- Display the offer validity dates -->
