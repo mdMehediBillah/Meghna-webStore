@@ -1,20 +1,16 @@
 <template>
   <div
-    class="container flex flex-col lg:flex-row items-center bg-gray-50 justify-between mx-auto px-8 space-y-8 lg:space-y-0 lg:space-x-8 mt-2 lg:mt-3 rounded-lg"
+    class="container flex flex-col lg:flex-row items-center bg-slate-600 justify-between mx-auto space-y-8 lg:space-y-0 lg:space-x-8 mt-2 lg:mt-3 rounded-lg text-gray-50"
   >
     <!-- Text Section -->
     <div class="w-full lg:w-1/2 text-center lg:text-left">
-      <p class="font-semibold text-gray-600 text-sm pb-2">
-        Join 120.000+ Happy Customers
-      </p>
-      <h1
-        class="text-3xl font-bold text-gray-800 pt-16 lg:pt-1 uppercase font-light"
-      >
+      <p class="font-semibold text-sm pb-2">Join 120.000+ Happy Customers</p>
+      <h1 class="text-4xl pt-16 lg:pt-1 uppercase font-light text-yellow-200">
         <span class="py-8">YOUR AUTHENTIC </span>
         <br />
         <span>SOUTH-ASIAN GROCERY STORE</span>
       </h1>
-      <p class="text-gray-600 mt-4">
+      <p class="mt-4">
         Explore a world of authentic South-Asian flavors and ingredients,
         delivered right to your door.
       </p>
@@ -40,7 +36,4 @@
 
 <style scoped>
 /* Additional styles for responsiveness and layout adjustments */
-.container {
-  max-width: 1280px; /* Optional: Set a max width for large screens */
-}
 </style>
