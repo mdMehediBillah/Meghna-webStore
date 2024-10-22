@@ -9,14 +9,14 @@
 
         <!-- Display product details if available -->
         <div
-          v-else-if="product"
+          v-else-if="productForDetail"
           class="grid lg:grid-cols-2 md:grid-cols-1 gap-2"
         >
           <!-- Product Image and Labels Container -->
           <div class="flex justify-end">
             <img
-              :src="product.image"
-              :alt="product.brandName"
+              :src="productForDetail.image"
+              :alt="productForDetail.brandName"
               class="h-[400px] object-cover rounded-md"
             />
           </div>
@@ -28,39 +28,42 @@
             >
               Product Details
             </h1>
-            <h2 class="text-2xl font-semibold">{{ product.brandName }}</h2>
-            <p class="mt-2">{{ product.title }}</p>
+            <h2 class="text-2xl font-semibold">
+              {{ productForDetail.brandName }}
+            </h2>
+            <p class="mt-2">{{ productForDetail.title }}</p>
 
             <!-- Size and Price Details -->
             <div class="mt-2">
               <ul>
                 <li
-                  v-for="size in product.sizes"
+                  v-for="size in productForDetail.sizes"
                   :key="size._id"
                   class="flex gap-6 items-center"
                 >
                   <span
                     class="text-gray-800 font-semibold bg-gray-200 py-1 px-4 border border-gray-300 rounded-lg"
                   >
-                    {{ size.value }}
-                    {{ size.unit }}
+                    {{ size.value }} {{ size.unit }}
                   </span>
                   <div class="flex items-center">
                     <!-- Display Discounted Price -->
                     <span
-                      v-if="product.offer?.discountPercentage > 0"
+                      v-if="productForDetail.offer?.discountPercentage > 0"
                       class="text-red-600 font-semibold mr-2"
                     >
                       €{{
                         (
                           size.price -
-                          (size.price * product.offer.discountPercentage) / 100
+                          (size.price *
+                            productForDetail.offer.discountPercentage) /
+                            100
                         ).toFixed(2)
                       }}
                     </span>
                     <!-- Display Original Price with Line-through if Discounted -->
                     <span
-                      v-if="product.offer?.discountPercentage > 0"
+                      v-if="productForDetail.offer?.discountPercentage > 0"
                       class="line-through text-gray-500 mr-2"
                     >
                       €{{ size.price.toFixed(2) }}
@@ -76,7 +79,7 @@
               <div class="flex mt-4 gap-1">
                 <!-- "Best Seller" Label -->
                 <div
-                  v-if="product.isBestSeller"
+                  v-if="productForDetail.isBestSeller"
                   class="text-gray-800 font-semibold px-3 py-1 rounded-md bg-gray-50 border border-gray-300"
                 >
                   Best Seller
@@ -84,40 +87,44 @@
 
                 <!-- "New Arrival" Label -->
                 <div
-                  v-if="product.isNewArrival"
+                  v-if="productForDetail.isNewArrival"
                   class="text-gray-800 font-semibold px-3 py-1 rounded-md bg-gray-50 border border-gray-300"
                 >
-                  New Ariival
+                  New Arrival
                 </div>
 
                 <!-- Discount percentage label -->
                 <div
-                  v-if="product.offer?.discountPercentage > 0"
+                  v-if="productForDetail.offer?.discountPercentage > 0"
                   class="text-gray-800 font-semibold px-3 py-1 rounded-md bg-gray-50 border border-gray-300"
                 >
-                  {{ product.offer.discountPercentage }}% Off
+                  {{ productForDetail.offer.discountPercentage }}% Off
                 </div>
               </div>
 
               <div class="flex flex-col mt-8 gap-2">
-                <span>Only {{ product.stock }} items left of this product</span>
+                <span
+                  >Only {{ productForDetail.stock }} items left of this
+                  product</span
+                >
+
                 <!-- Cart Icon -->
                 <div>
                   <button
                     class="bg-green-600 text-gray-50 py-2 px-20 rounded-lg hover:bg-rose-500 transition-colors duration-300"
+                    :disabled="isAddedToCart"
                     aria-label="Add to cart"
                     title="Add to cart"
-                    @click="addItemToCart(product)"
+                    @click="addItemToCart(productForDetail)"
                   >
                     <i class="fa-solid fa-cart-shopping"></i>
-                    Add to cart
+                    {{ isAddedToCart ? "Added to cart" : "Add to cart" }}
                   </button>
                 </div>
               </div>
             </div>
 
-            <p class="mt-2">{{ product.description }}</p>
-            <!-- Add more product details here as needed -->
+            <p class="mt-2">{{ productForDetail.description }}</p>
           </div>
         </div>
 
@@ -127,14 +134,44 @@
         </div>
       </div>
     </div>
+
+    <!-- "You may also like" section -->
+    <section class="container mx-auto">
+      <div>
+        <h3 class="uppercase">You may also like</h3>
+        <div
+          v-if="filteredMayLikeProducts.length === 0"
+          class="text-center py-10"
+        >
+          <p class="text-gray-500 text-xl">No products found</p>
+        </div>
+
+        <div
+          v-else
+          class="grid lg:grid-cols-6 md:grid-cols-3 gap-4 container justify-between mb-24"
+        >
+          <div
+            class="col-md-4"
+            v-for="product in filteredMayLikeProducts"
+            :key="product._id"
+          >
+            <SingleCard :product="product" />
+          </div>
+        </div>
+      </div>
+    </section>
+
     <FooterComponents />
   </section>
 </template>
+
 <script setup>
-import { computed, onBeforeMount } from "vue";
+import SingleCard from "../components/Cards/SingleCard.vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import FooterComponents from "@/components/footer/FooterComponents.vue";
 import { useProductStore } from "@/stores/useProductStore.js";
+import { useCartStore } from "@/stores/cartStore.js";
 
 // Get the product ID from the route params
 const route = useRoute();
@@ -142,44 +179,47 @@ const { id } = route.params;
 
 // Use the product store
 const productStore = useProductStore();
-const { fetchProducts, isLoading, productById } = productStore;
-
-// Computed property to get the product by ID from the store
-const product = computed(() => productById(id));
+const { fetchProducts, isLoading, productById, allProducts } = productStore;
 
 // Fetch the products when the component is mounted
 onBeforeMount(async () => {
   await fetchProducts();
 });
 
-// Add the product to the cart
-import { useCartStore } from "@/stores/cartStore.js"; // Import the cart store
+// Computed property to get the product by ID from the store
+const productForDetail = computed(() => productById(id));
 
 // Get the cart store instance
 const cartStore = useCartStore();
+const isAddedToCart = ref(false); // Track the cart button state
 
 // Method to add product to the cart
 const addItemToCart = (item) => {
-  console.log("Current cart items:", cartStore.cartItems); // Debugging line
   const existingItem = cartStore.cartItems.find(
     (cartItem) => cartItem.id === id
   );
-  console.log(id); // Debugging line
 
   if (existingItem) {
-    console.log("Item already in cart. Increasing quantity."); // Debugging line
-    existingItem.quantity += 1; // Increase quantity if item already exists
+    existingItem.quantity += 1;
   } else {
-    console.log("Adding new item to cart."); // Debugging line
-    cartStore.cartItems.push({ ...item, quantity: 1 }); // Add new item with quantity 1
-    disableButton();
+    cartStore.cartItems.push({ ...item, quantity: 1 });
   }
+
+  isAddedToCart.value = true;
 };
 
-// Disable the add to cart button after adding the item
-const disableButton = () => {
-  const button = document.querySelector("button");
-  button.disabled = true;
-  button.textContent = "Added to cart";
-};
+// Computed property for filtered "You may also like" products
+const filteredMayLikeProducts = computed(() => {
+  // Check if productForDetail is available before filtering
+  if (productForDetail.value) {
+    return allProducts.filter((product) => {
+      // Return products from the same category, excluding the current product
+      return (
+        product.category === productForDetail.value.category &&
+        product._id !== id
+      );
+    });
+  }
+  return [];
+});
 </script>
