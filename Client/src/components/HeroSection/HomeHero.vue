@@ -1,6 +1,6 @@
 <template>
   <div
-    class="container flex flex-col lg:flex-row items-center bg-slate-600 justify-between mx-auto space-y-8 lg:space-y-0 lg:space-x-8 mt-2 lg:mt-3 rounded-lg text-gray-50"
+    class="container flex flex-col lg:flex-row items-center bg-slate-600 justify-between mx-auto space-y-8 lg:space-y-0 lg:space-x-8 mt-2 lg:mt-3 rounded-lg text-gray-50 p-4"
   >
     <!-- Text Section -->
     <div class="w-full lg:w-1/2 text-center lg:text-left">
