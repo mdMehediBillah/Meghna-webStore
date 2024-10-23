@@ -1,7 +1,7 @@
 <template>
-  <section>
+  <section class="p-2">
     <div
-      class="container mx-auto bg-slate-600 flex justify-center p-4 mt-4 rounded-lg"
+      class="container mx-auto bg-slate-600 flex justify-center p-4 rounded-lg"
     >
       <div class="flex flex-col py-12">
         <div class="rotate-[-10deg]">

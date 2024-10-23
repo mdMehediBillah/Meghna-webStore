@@ -31,9 +31,13 @@
       :src="product.image || 'default-image.jpg'"
       alt="Product image"
       class="h-36 object-cover rounded-md mx-auto"
-      @click="router.push(`/products/${product._id}`)"
+      @click="
+        {
+          handleDetailView(product._id);
+        }
+      "
     />
-
+    <!-- @click="router.push(`/products/${product._id}`)" -->
     <!-- Offer Details -->
     <div class="mt-4">
       <h5 class="font-semibold uppercase text-[14px]">
@@ -114,6 +118,11 @@ const addItemToCart = (item) => {
   } else {
     cartStore.cartItems.push({ ...item, quantity: 1 });
   }
+};
+
+// Method to navigate to the product detail view
+const handleDetailView = (id) => {
+  router.push(`/products/${id}`);
 };
 </script>
 
