@@ -6,7 +6,7 @@
     </div>
 
     <!-- Ensure category exists before rendering -->
-    <router-link v-if="category" :to="`/collections/${category._id}`">
+    <router-link v-if="category" :to="`/category/${category._id}`">
       <figure class="relative">
         <img
           :src="category.image"

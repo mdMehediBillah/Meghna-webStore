@@ -81,8 +81,8 @@ const routes = [
     meta: { title: "New Arrivals" },
   },
   {
-    path: "/collections/:id",
-    name: "collections",
+    path: "/category/:id",
+    name: "category",
     component: CategoryProductView,
     meta: { title: "Category Products" },
   },
