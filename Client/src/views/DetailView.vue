@@ -167,15 +167,16 @@
 
 <script setup>
 import SingleCard from "../components/Cards/SingleCard.vue";
-import { computed, onBeforeMount, ref } from "vue";
-import { useRoute } from "vue-router";
+import { computed, onBeforeMount, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import FooterComponents from "@/components/footer/FooterComponents.vue";
 import { useProductStore } from "@/stores/useProductStore.js";
 import { useCartStore } from "@/stores/cartStore.js";
 
-// Get the product ID from the route params
+// Get the route and router instance
 const route = useRoute();
-const { id } = route.params;
+const router = useRouter();
+const { id } = route.params; // Product ID from the URL
 
 // Use the product store
 const productStore = useProductStore();
@@ -186,8 +187,17 @@ onBeforeMount(async () => {
   await fetchProducts();
 });
 
+// Watch for route changes to update the product details
+watch(
+  () => route.params.id, // Watch the route's "id" param
+  async (newId) => {
+    // When the product ID changes, refetch the product details
+    await fetchProducts();
+  }
+);
+
 // Computed property to get the product by ID from the store
-const productForDetail = computed(() => productById(id));
+const productForDetail = computed(() => productById(route.params.id)); // Update to use route.params.id
 
 // Get the cart store instance
 const cartStore = useCartStore();
@@ -196,7 +206,7 @@ const isAddedToCart = ref(false); // Track the cart button state
 // Method to add product to the cart
 const addItemToCart = (item) => {
   const existingItem = cartStore.cartItems.find(
-    (cartItem) => cartItem.id === id
+    (cartItem) => cartItem.id === route.params.id
   );
 
   if (existingItem) {
@@ -210,13 +220,11 @@ const addItemToCart = (item) => {
 
 // Computed property for filtered "You may also like" products
 const filteredMayLikeProducts = computed(() => {
-  // Check if productForDetail is available before filtering
   if (productForDetail.value) {
     return allProducts.filter((product) => {
-      // Return products from the same category, excluding the current product
       return (
         product.category === productForDetail.value.category &&
-        product._id !== id
+        product._id !== route.params.id
       );
     });
   }
