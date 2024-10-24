@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky top-0 bg-gray-50 shadow z-50">
+  <header class="sticky top-0 bg-gray-50 shadow z-50 px-4">
     <nav
       class="container flex flex-col sm:flex-row items-center gap-4 text-gray-600 py-4 justify-between"
     >
@@ -17,6 +17,7 @@
       <!-- Search form -->
       <form
         class="flex items-center bg-gray-200 rounded-xl py-1 px-4 gap-2 sm:w-full md:w-1/2 lg:w-1/3"
+        @submit.prevent="performSearch"
       >
         <div>
           <i class="fa-solid fa-magnifying-glass cursor-pointer"></i>
@@ -24,6 +25,7 @@
         <div>
           <input
             type="text"
+            v-model="searchQuery"
             placeholder="Search for products..."
             class="border-none bg-transparent rounded-lg p-2 active:outline-none focus:outline-none w-full"
           />
@@ -94,20 +96,6 @@
             </span>
           </div>
         </router-link>
-
-        <!-- Add product button -->
-        <!-- <router-link :to="{ name: 'addProduct' }">
-          <div>
-            <span class="cursor-pointer">Add</span>
-          </div>
-        </router-link> -->
-
-        <!-- Add category button
-        <router-link :to="{ name: 'addCategory' }">
-          <div>
-            <span class="cursor-pointer">Category</span>
-          </div>
-        </router-link> -->
       </div>
     </nav>
 
@@ -214,6 +202,18 @@ const cartItemCount = computed(() => cartStore.cartItemCount);
 // Define a reactive user property to show/hide the user dropdown
 
 const showDropdown = ref(false); // Controls visibility of the user dropdown
+import { useRouter } from "vue-router";
+
+const searchQuery = ref(""); // Reactive property for the search input
+const router = useRouter();
+
+// Method to handle search
+const performSearch = () => {
+  if (searchQuery.value.trim()) {
+    // Navigate to the search results page with the search query as a route parameter
+    router.push({ name: "searchResults", query: { q: searchQuery.value } });
+  }
+};
 </script>
 
 <style scoped></style>

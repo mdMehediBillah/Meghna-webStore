@@ -6,12 +6,13 @@
       <div class="flex flex-col py-12">
         <div class="rotate-[-10deg]">
           <span
-            class="text-3xl font-semibold text-slate-600 bg-yellow-300 px-3 py-1 rounded-lg"
-            >Discover your Products</span
+            class="text-3xl font-semibold text-slate-600 bg-yellow-300 px-3 py-1"
           >
+            Discover your Products
+          </span>
         </div>
         <span class="z-20 pt-10 text-slate-100">
-          Explore wide range of our products category.
+          Explore a wide range of our products category.
         </span>
       </div>
     </div>
@@ -19,20 +20,24 @@
       class="mt-10 flex justify-between items-center flex-wrap container mx-auto px-4 rounded-lg"
     >
       <h3 class="font-semibold text-xl py-2 uppercase mb-2">
-        Category Products
+        {{ selectedCategoryName }}
       </h3>
       <div class="flex gap-8 items-center">
         <div class="flex gap-6 items-center">
           <span>Filter</span>
           <select
-            @change="handleChange"
             v-model="filter"
+            @change="handleChange"
             class="border border-gray-300 rounded-md p-2"
           >
-            <option value="all">All</option>
-            <option value="glutenFree">Gluten-Free</option>
-            <option value="vegan">Vegan</option>
-            <option value="bestSeller">Best Seller</option>
+            <option value="">All</option>
+            <option
+              v-for="category in allCategories"
+              :key="category._id"
+              :value="category._id"
+            >
+              {{ category.name }}
+            </option>
           </select>
         </div>
       </div>
@@ -68,13 +73,13 @@ import { useRoute } from "vue-router";
 // Get the route and params
 const route = useRoute();
 const { id } = route.params;
+
 const allCategories = ref([]);
 const products = ref([]); // Array to store all products
 const isLoading = ref(false); // Reactive loading state
 const error = ref(null); // Reactive error state
-
-// State for selected category from URL params
-const selectedCategory = ref(id || null);
+const selectedCategory = ref(id || null); // State for selected category from URL params
+const filter = ref("all"); // State for selected filter option
 
 // Fetch categories from the API
 const fetchCategories = async () => {
@@ -95,10 +100,8 @@ const fetchCategories = async () => {
 
 // Fetch products from the API
 const fetchProducts = async () => {
-  if (products.value.length > 0) return; // Prevent unnecessary fetch
+  isLoading.value = true; // Set loading state to true
 
-  isLoading.value = true;
-  error.value = null;
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_API_URL}/api/v1/products`
@@ -109,14 +112,15 @@ const fetchProducts = async () => {
     error.value = err.response?.data?.message || "Failed to fetch products";
     console.error("Error fetching products:", error.value);
   } finally {
-    isLoading.value = false;
+    isLoading.value = false; // Reset loading state
   }
 };
 
-// Fetch products when the component is mounted
+// Fetch products and categories when the component is mounted
 onMounted(async () => {
-  console.log("Fetching products...");
+  console.log("Fetching products and categories...");
   await fetchProducts(); // Fetch all products
+  await fetchCategories(); // Fetch categories
 });
 
 // Watch for route changes to update selected category
@@ -128,7 +132,13 @@ watch(
   }
 );
 
-// Filter products based on the selected category ID
+// Handle filter change
+const handleChange = () => {
+  // This function is called on change, but filter is already bound to v-model
+  console.log("Filter changed to:", filter.value); // Log the selected filter
+};
+
+// Filter products based on the selected category and filter option
 const filteredProducts = computed(() => {
   // Ensure products are loaded before filtering
   if (!products.value || products.value.length === 0) {
@@ -139,9 +149,24 @@ const filteredProducts = computed(() => {
   console.log("Filtering products for category:", selectedCategory.value);
 
   // Filter products based on the selected category
-  return products.value.filter((product) => {
+  let filtered = products.value.filter((product) => {
     return product.category === selectedCategory.value;
   });
+
+  // Apply additional filtering based on the selected filter option
+  if (filter.value !== "all") {
+    filtered = filtered.filter((product) => product.type === filter.value);
+  }
+
+  return filtered;
+});
+
+// Compute the selected category name
+const selectedCategoryName = computed(() => {
+  const category = allCategories.value.find(
+    (cat) => cat._id === selectedCategory.value
+  );
+  return category ? category.name : "Category"; // Default name if no category is found
 });
 </script>
 

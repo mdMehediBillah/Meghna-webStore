@@ -5,6 +5,7 @@ import AdminPanelView from "@/views/AdminPanelView.vue";
 import AllProductsView from "@/views/AllProductsView.vue";
 import CategoryProductView from "@/views/CategoryProductView.vue";
 import NewArrivalsView from "@/views/NewArrivalsView.vue";
+import SearchResultView from "@/views/SearchResultView.vue";
 import UpdateProductView from "@/views/UpdateProductView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -115,6 +116,11 @@ const routes = [
     name: "addCategory",
     component: AddCategoryView,
     meta: { title: "Add Category" },
+  },
+  {
+    path: "/search",
+    name: "searchResults",
+    component: SearchResultView,
   },
   {
     path: "/:pathMatch(.*)*",
