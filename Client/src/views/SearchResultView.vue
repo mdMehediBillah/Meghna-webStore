@@ -1,8 +1,10 @@
 <template>
   <section>
     <div class="container mx-auto">
-      <h2 class="text-2xl font-semibold mb-4">
-        Search Results for "{{ searchQuery }}":
+      <h2 class="text-2xl mb-4 mt-4">
+        <span>Search Results for</span>
+        <span class="font-semibold pl-2">"{{ searchQuery }}":</span>
+        :
       </h2>
 
       <!-- Display filtered products if available -->
@@ -38,6 +40,19 @@ const route = useRoute();
 const searchQuery = ref(route.query.q || ""); // Search query from the URL
 const allProducts = ref([]); // All products fetched from the API
 const filteredProducts = ref([]); // Filtered products based on the search query
+const allCategories = ref([]); // Store all categories
+
+// Fetch all categories from the API
+const fetchCategories = async () => {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/v1/categories`
+    );
+    allCategories.value = response.data; // Store fetched categories
+  } catch (error) {
+    console.error("Failed to fetch categories", error);
+  }
+};
 
 // Fetch all products from the API
 const fetchProducts = async () => {
@@ -54,18 +69,26 @@ const fetchProducts = async () => {
 
 // Filter products based on search query
 const filterProducts = () => {
-  // Normalize the search query to be case-insensitive and trim any extra spaces
   const normalizedQuery = searchQuery.value.trim().toLowerCase();
 
   if (normalizedQuery) {
-    // Filter the products based on the search query, checking multiple fields
     filteredProducts.value = allProducts.value.filter((product) => {
-      // Check if the product matches the search query in multiple fields
+      // Find matching category name by ID if product.category exists
+      const categoryMatch = allCategories.value.find(
+        (cat) =>
+          cat._id === product.category &&
+          cat.name.toLowerCase().includes(normalizedQuery)
+      );
+
       return (
-        product.brandName.toLowerCase().includes(normalizedQuery) ||
-        product.title.toLowerCase().includes(normalizedQuery) || // Check product name
-        // product.description?.toLowerCase().includes(normalizedQuery) || // Optional: Check description
-        product.category?.name?.toLowerCase().includes(normalizedQuery) // Check category.name if it exists
+        product.brandName?.toLowerCase().includes(normalizedQuery) ||
+        product.title?.toLowerCase().includes(normalizedQuery) ||
+        categoryMatch || // Check if category name matches
+        (product.isNewArrival && normalizedQuery === "new arrival") ||
+        (product.isWeeklyOffer && normalizedQuery === "weekly offer") ||
+        (product.isBestSeller && normalizedQuery === "best seller") ||
+        (product.isVegan && normalizedQuery === "vegan") ||
+        (product.isGlutenFree && normalizedQuery === "gluten-free")
       );
     });
   } else {
@@ -82,8 +105,11 @@ watch(
   }
 );
 
-// Fetch products once the component is mounted
-onMounted(fetchProducts);
+// Fetch products and categories once the component is mounted
+onMounted(() => {
+  fetchProducts();
+  fetchCategories();
+});
 </script>
 
 <style scoped></style>
