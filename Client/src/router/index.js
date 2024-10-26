@@ -3,9 +3,11 @@ import AdminCtagoriesCom from "@/components/admin/AdminCtagoriesCom.vue";
 import CategoryUpdateCom from "@/components/admin/CategoryUpdateCom.vue";
 import AdminPanelView from "@/views/AdminPanelView.vue";
 import AllProductsView from "@/views/AllProductsView.vue";
+import BestSellerView from "@/views/BestSellerView.vue";
 import CategoryProductView from "@/views/CategoryProductView.vue";
 import NewArrivalsView from "@/views/NewArrivalsView.vue";
 import SearchResultView from "@/views/SearchResultView.vue";
+import SpicesCategoryView from "@/views/SpicesCategoryView.vue";
 import UpdateProductView from "@/views/UpdateProductView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -73,6 +75,18 @@ const routes = [
     path: "/offers",
     name: "offers",
     component: WeeklyOffer,
+    meta: { title: "Weekly Offers" },
+  },
+  {
+    path: "/spices",
+    name: "spices",
+    component: SpicesCategoryView,
+    meta: { title: "Weekly Offers" },
+  },
+  {
+    path: "/bestSellers",
+    name: "bestSellers",
+    component: BestSellerView,
     meta: { title: "Weekly Offers" },
   },
   {

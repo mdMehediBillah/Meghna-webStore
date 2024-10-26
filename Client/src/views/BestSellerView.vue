@@ -1,31 +1,31 @@
 <template>
   <section class="p-2">
     <div
-      class="container mx-auto bg-slate-600 flex justify-center p-4 rounded-lg"
+      class="container mx-auto bg-cyan-700 flex justify-center p-4 rounded-lg"
     >
       <div class="flex flex-col py-12">
         <div class="rotate-[-10deg]">
           <span
-            class="text-3xl font-semibold text-slate-600 bg-yellow-300 px-3 py-1 rounded-lg"
-            >All Products</span
+            class="text-3xl font-semibold text-slate-800 bg-cyan-300 px-2 py-1 rounded-lg"
+            >Best Seller</span
           >
         </div>
-        <span class="z-20 pt-8 text-slate-100">
-          Explore our wide range of products.
-        </span>
+        <span class="z-20 pt-6 text-slate-100"
+          >Explore our bestSeller products.</span
+        >
       </div>
     </div>
     <!-- Header Section -->
     <div class="container mx-auto">
       <div class="mt-10 flex justify-between items-center flex-wrap">
-        <h3 class="font-semibold text-xl py-2 uppercase mb-2">All Products</h3>
+        <h3 class="font-semibold text-xl py-2 uppercase mb-2">Best Sellers</h3>
         <!-- Display the offer validity dates -->
-        <p>{{ offerValidityText }}</p>
+        <!-- <p>{{ offerValidityText }}</p> -->
         <div class="flex gap-8 items-center">
           <div class="flex gap-6 items-center">
             <span>Filter</span>
             <select
-              @change="handleChange"
+              @change="handleFilterChange"
               v-model="filter"
               class="border border-gray-300 rounded-md p-2"
             >
@@ -85,10 +85,15 @@ const fetchProducts = async () => {
   }
 };
 
-const filteredProducts = computed(() => {
-  if (filter.value === "all") return allProducts.value;
+// Computed property to filter for best sellers only
+const filteredBestSellers = computed(() => {
+  return allProducts.value.filter((product) => product.isBestSeller);
+});
 
-  return allProducts.value.filter((product) => {
+const filteredProducts = computed(() => {
+  if (filter.value === "all") return filteredBestSellers.value;
+
+  return filteredBestSellers.value.filter((product) => {
     switch (filter.value) {
       case "glutenFree":
         return product.glutenFree;
@@ -107,7 +112,8 @@ watch(filter, (newFilter) => {
   router.push({ query: { ...route.query, filter: newFilter } });
 });
 
-const handleFilterChange = () => {
+// Event handler for filter change
+const handleFilterChange = (event) => {
   filter.value = event.target.value;
 };
 
@@ -115,4 +121,5 @@ onMounted(() => {
   fetchProducts();
 });
 </script>
+
 <style scoped></style>
