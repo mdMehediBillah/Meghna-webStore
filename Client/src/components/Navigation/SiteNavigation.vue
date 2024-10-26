@@ -52,18 +52,18 @@
 
         <!-- User and Cart icons -->
         <div class="relative">
-          <!-- User Icon with Hover Effects -->
+          <!-- User Icon with Click Effects -->
           <i
             class="fa-solid fa-circle-user text-2xl transition ease-in-out delay-125 hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer"
-            @click="showDropdown = !showDropdown"
+            @click="showUserDropdown = !showUserDropdown"
           ></i>
 
           <!-- Dropdown for Login and Admin -->
           <div
-            v-if="showDropdown"
-            class="absolute bg-gray-200 px-2 py-1 mt-2 rounded shadow-md z-50 bottom-[-72px] right-[-20px]"
-            @mouseenter="showDropdown = true"
-            @mouseleave="showDropdown = false"
+            v-if="showUserDropdown"
+            class="absolute bg-gray-200 px-2 py-1 mt-2 rounded shadow-md z-50"
+            @mouseenter="showUserDropdown = true"
+            @mouseleave="showUserDropdown = false"
           >
             <span
               class="cursor-pointer block hover:bg-rose-300 p-1 rounded font-semibold"
@@ -80,21 +80,16 @@
 
         <!-- Cart Icon with item count -->
         <router-link :to="{ name: 'cart' }" class="relative">
-          <div class="relative">
-            <!-- Cart Icon -->
-            <i
-              class="fa-solid fa-cart-shopping text-xl text-gray-600 transition ease-in-out delay-125 hover:-translate-y-1 hover:scale-110 duration-300"
-              aria-label="Go to cart"
-            ></i>
-
-            <!-- Cart Item Count -->
-            <span
-              v-if="cartItemCount >= 0"
-              class="text-xs font-semibold absolute top-[-8px] right-[-12px] bg-red-500 text-white rounded-full px-1.5 py-0.5"
-            >
-              {{ cartItemCount }}
-            </span>
-          </div>
+          <i
+            class="fa-solid fa-cart-shopping text-xl text-gray-600 transition ease-in-out delay-125 hover:-translate-y-1 hover:scale-110 duration-300"
+            aria-label="Go to cart"
+          ></i>
+          <span
+            v-if="cartItemCount >= 0"
+            class="text-xs font-semibold absolute top-[-8px] right-[-12px] bg-red-500 text-white rounded-full px-1.5 py-0.5"
+          >
+            {{ cartItemCount }}
+          </span>
         </router-link>
       </div>
     </nav>
@@ -111,14 +106,37 @@
           <span class="uppercase hover:text-red-600">All Products</span>
         </router-link>
       </div>
-      <div class="flex items-center gap-2 text-gray-600">
-        <router-link
-          to="/categories"
-          class="cursor-pointer hover:underline transition-colors duration-300"
+      <!-- Category Dropdown -->
+      <div
+        class="relative"
+        :class="showCategoryDropdown ? 'text-blue-600' : 'text-gray-600'"
+      >
+        <span
+          class="uppercase hover:text-red-600 cursor-pointer"
+          @mouseenter="toggleCategoryDropdown(true)"
+          @mouseleave="toggleCategoryDropdown(false)"
         >
-          <span class="uppercase hover:text-red-600">Categories</span>
-        </router-link>
+          Categories
+        </span>
+
+        <!-- Dropdown for Categories -->
+        <div
+          v-if="showCategoryDropdown && allCategories.length > 0"
+          class="absolute bg-slate-200 left-1/2 transform -translate-x-1/2 shadow-md rounded px-4 py-2 z-50 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-w-[1000px] min-w-[300px] sm:w-[200px] md:w-[700px] lg:w-[400px] xl:w-[600px] 2xl:w-[800px] 3xl:w-[1000px]"
+          @mouseenter="toggleCategoryDropdown(true)"
+          @mouseleave="toggleCategoryDropdown(false)"
+        >
+          <router-link
+            v-for="category in allCategories"
+            :key="category?._id"
+            :to="`/category/${category._id}`"
+            class="block hover:bg-slate-500 px-2 py-1 rounded transition-colors duration-300 hover:text-slate-100"
+          >
+            {{ category?.name || "Unnamed Category" }}
+          </router-link>
+        </div>
       </div>
+
       <div class="flex items-center gap-2 text-gray-600">
         <router-link
           to="/spices"
@@ -173,47 +191,59 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 import engIcon from "../../assets/photos/eng-lan-icon.png";
 import gerIcon from "../../assets/photos/ger-lan-icon.png";
+import { useCartStore } from "../../stores/cartStore";
+const store = useCartStore();
+// Access the cart item count directly from the store's getter
+const cartItemCount = computed(() => store.cartItemCount);
 
-// Define the selected language as a reactive property
 const selectedLanguage = ref("en");
-
-// Define a computed property for the language icon
-const currentLangIcon = computed(() => {
-  return selectedLanguage.value === "en" ? engIcon : gerIcon;
-});
-
-// Handle language change
-watch(selectedLanguage, (newLang) => {
-  console.log("Language changed to:", newLang);
-  // Additional logic to handle language change can be added here
-});
-
-// Define the cart item count
-
-import { useCartStore } from "@/stores/cartStore";
-
-const cartStore = useCartStore();
-const cartItems = computed(() => cartStore.cartItems);
-const cartItemCount = computed(() => cartStore.cartItemCount);
-
-// Define a reactive user property to show/hide the user dropdown
-
-const showDropdown = ref(false); // Controls visibility of the user dropdown
-import { useRouter } from "vue-router";
-
-const searchQuery = ref(""); // Reactive property for the search input
+const currentLangIcon = computed(() =>
+  selectedLanguage.value === "en" ? engIcon : gerIcon
+);
+const showUserDropdown = ref(false); // For User/Admin dropdown
+const showCategoryDropdown = ref(false); // For Category dropdown
+// const cartItemCount = ref(0);
+const searchQuery = ref("");
+const allCategories = ref([]);
 const router = useRouter();
 
-// Method to handle search
+// Fetch all categories only once when component mounts
+const fetchCategories = async () => {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/v1/categories`
+    );
+    allCategories.value = response.data || []; // Fallback to empty array if data is null
+  } catch (error) {
+    console.error("Failed to fetch categories", error);
+    allCategories.value = []; // Ensure it remains an array on error
+  }
+};
+
+// Handle dropdown toggle
+const toggleCategoryDropdown = (isVisible) => {
+  showCategoryDropdown.value = isVisible;
+};
+
+// Search function
 const performSearch = () => {
   if (searchQuery.value.trim()) {
-    // Navigate to the search results page with the search query as a route parameter
     router.push({ name: "searchResults", query: { q: searchQuery.value } });
   }
 };
+
+const moveToCategory = (categoryId) => {
+  router.push({ name: "category", params: { id: categoryId } });
+};
+
+onMounted(() => {
+  fetchCategories();
+});
 </script>
 
 <style scoped></style>
