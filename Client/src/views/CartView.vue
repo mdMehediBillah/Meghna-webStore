@@ -3,7 +3,10 @@
     <h1 class="text-2xl font-bold mb-4">Your Shopping Cart</h1>
 
     <!-- Check if the cart has items -->
-    <div v-if="cartItems.length > 0" class="flex gap-4 justify-between">
+    <div
+      v-if="cartItems.length > 0"
+      class="grid md:grid-cols-2 gap-24 justify-between"
+    >
       <!-- Display list of cart items -->
       <ul>
         <li
@@ -16,7 +19,12 @@
             <img
               :src="item.image"
               :alt="item.title"
-              class="w-24 h-24 object-cover rounded-md relative"
+              class="w-24 h-24 object-cover rounded-md relative cursor-pointer"
+              @click="
+                {
+                  handleDetailView(item._id);
+                }
+              "
             />
             <div>
               <h2 class="text-md font-semibold mb-1">{{ item.title }}</h2>
@@ -93,7 +101,9 @@
         </li>
       </ul>
 
-      <div class="min-w-[360px]">
+      <div
+        class="min-w-[500px] lg:fixed lg:right-8 lg:top-32 px-4 py-2 lg:max-h-[calc(90vh-80px)] lg:overflow-y-auto bg-slate-200 shadow-lg rounded"
+      >
         <!-- Shipping status text -->
         <p
           class="text-sm px-4 py-1 rounded text-center"
@@ -178,6 +188,8 @@
 <script setup>
 import { useCartStore } from "@/stores/cartStore";
 import { computed } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 // Access the cart store
 const cartStore = useCartStore();
@@ -230,4 +242,9 @@ const freeShippingThreshold = 40;
 const progressPercentage = computed(() => {
   return Math.min((cartTotal.value / freeShippingThreshold) * 100, 100);
 });
+
+// Method to navigate to the product detail view
+const handleDetailView = (id) => {
+  router.push(`/products/${id}`);
+};
 </script>
