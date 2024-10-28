@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container mx-auto">
-      <div class="container mx-auto mt-6 mb-24">
+      <div class="container mx-auto mt-6 mb-12">
         <!-- Show loading message while fetching data -->
         <div v-if="isLoading" class="text-center py-4">
           <p>Loading...</p>
@@ -121,10 +121,15 @@
                     {{ isAddedToCart ? "Added to cart" : "Add to cart" }}
                   </button>
                 </div>
+                <button
+                  @click="displayMoreInformation"
+                  class="text-slate-600 font-semibold p-2 border rounded hover:bg-gray-100 transition-colors duration-300 hover:border-gray-400 mt-4 w-48"
+                >
+                  {{ isMoreInfoVisible ? "Show less" : "Show more" }}
+                  information
+                </button>
               </div>
             </div>
-
-            <p class="mt-2">{{ productForDetail.description }}</p>
           </div>
         </div>
 
@@ -133,12 +138,56 @@
           <p>Product not found or an error occurred.</p>
         </div>
       </div>
+      <div class="pb-32">
+        <!-- Additional information section, shown conditionally -->
+        <div v-if="isMoreInfoVisible" class="flex gap-8 mt-4">
+          <!-- Product Description -->
+          <div class="w-full">
+            <h1
+              class="uppercase text-md font-semibold my-4 border-b-2 border-gray-300 pb-2"
+            >
+              Product Description
+            </h1>
+            <p class="mt-2">{{ productForDetail.description }}</p>
+          </div>
+          <!-- Product Specifications -->
+          <div class="w-full">
+            <h1
+              class="uppercase text-md font-semibold my-4 border-b-2 border-gray-300 pb-2"
+            >
+              Product Specifications
+            </h1>
+            <ul>
+              <li
+                v-for="spec in productForDetail2.specifications"
+                :key="spec._id"
+                class="flex gap-6 items-center"
+              >
+                <span
+                  class="text-gray-800 font-semibold bg-gray-200 py-1 px-4 border border-gray-300 rounded-lg"
+                >
+                  {{ spec.name }}
+                </span>
+                <div class="flex items-center">
+                  <span class="text-gray-800 font-semibold">
+                    {{ spec.value }}
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- "You may also like" section -->
     <section class="container mx-auto">
       <div>
-        <h3 class="uppercase">You may also like</h3>
+        <h3
+          class="uppercase text-2xl font-semibold my-4 border-b-2 border-gray-300 pb-2"
+        >
+          You may also like
+        </h3>
         <div
           v-if="filteredMayLikeProducts.length === 0"
           class="text-center py-10"
@@ -230,4 +279,22 @@ const filteredMayLikeProducts = computed(() => {
   }
   return [];
 });
+
+// Product details data (example data structure)
+const productForDetail2 = ref({
+  description: "This is an amazing product with high quality specifications.",
+  specifications: [
+    { _id: "1", name: "Weight", value: "200g" },
+    { _id: "2", name: "Material", value: "Stainless Steel" },
+    // Add more specifications as needed
+  ],
+});
+
+// State variable to track the visibility of the additional information
+const isMoreInfoVisible = ref(false);
+
+// Method to toggle visibility of additional product information
+const displayMoreInformation = () => {
+  isMoreInfoVisible.value = !isMoreInfoVisible.value;
+};
 </script>

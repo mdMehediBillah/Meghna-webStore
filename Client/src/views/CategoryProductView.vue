@@ -6,7 +6,7 @@
       <div class="flex flex-col py-12">
         <div class="rotate-[-10deg]">
           <span
-            class="text-3xl font-semibold text-slate-600 bg-yellow-300 px-3 py-1"
+            class="text-3xl font-semibold text-slate-600 bg-yellow-300 px-3 py-1 rounded-lg"
           >
             Discover your Products
           </span>

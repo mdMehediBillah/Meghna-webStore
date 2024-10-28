@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="container mx-auto">
+    <div class="container mx-auto mb-36">
       <h2 class="text-2xl mb-4 mt-4">
         <span>Search Results for</span>
         <span class="font-semibold pl-2">"{{ searchQuery }}":</span>
@@ -27,6 +27,7 @@
         <p>No products found for "{{ searchQuery }}".</p>
       </div>
     </div>
+    <FooterComponents />
   </section>
 </template>
 
@@ -35,6 +36,7 @@ import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import SingleCard from "../components/Cards/SingleCard.vue";
+import FooterComponents from "@/components/footer/FooterComponents.vue";
 
 const route = useRoute();
 const searchQuery = ref(route.query.q || ""); // Search query from the URL
