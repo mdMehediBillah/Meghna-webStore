@@ -111,7 +111,12 @@
                 <!-- Cart Icon -->
                 <div>
                   <button
-                    class="bg-green-600 text-gray-50 py-2 px-20 rounded-lg hover:bg-rose-500 transition-colors duration-300"
+                    class="text-gray-50 py-2 px-20 rounded-lg hover:bg-rose-500 transition-colors duration-300"
+                    :class="
+                      isAddedToCart
+                        ? 'bg-gray-300 cursor-not-allowed text-gray-500'
+                        : 'bg-green-600'
+                    "
                     :disabled="isAddedToCart"
                     aria-label="Add to cart"
                     title="Add to cart"
@@ -252,10 +257,18 @@ const productForDetail = computed(() => productById(route.params.id)); // Update
 const cartStore = useCartStore();
 const isAddedToCart = ref(false); // Track the cart button state
 
+// Watch for route changes to reset "isAddedToCart"
+watch(
+  () => route.params.id,
+  () => {
+    isAddedToCart.value = false;
+  }
+);
+
 // Method to add product to the cart
 const addItemToCart = (item) => {
   const existingItem = cartStore.cartItems.find(
-    (cartItem) => cartItem.id === route.params.id
+    (cartItem) => cartItem._id === item._id
   );
 
   if (existingItem) {
