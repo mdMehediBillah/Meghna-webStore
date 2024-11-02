@@ -5,13 +5,15 @@
     >
       <!-- Text Section -->
       <div class="w-full lg:w-1/2 text-center lg:text-left">
-        <p class="font-semibold text-sm pb-2">Join 120.000+ Happy Customers</p>
-        <h1 class="text-4xl pt-16 lg:pt-1 uppercase text-yellow-400">
+        <p class="font-semibold text-sm pb-4 hidden md:block">
+          Join 120.000+ Happy Customers
+        </p>
+        <h1 class="text-4xl pt-4 lg:pt-4 uppercase text-yellow-400">
           <span class="py-8">YOUR AUTHENTIC </span>
           <br />
           <span>SOUTH-ASIAN GROCERY STORE</span>
         </h1>
-        <p class="mt-4">
+        <p class="mt-4 hidden md:block">
           Explore a world of authentic South-Asian flavors and ingredients,
           delivered right to your door.
         </p>
@@ -28,7 +30,7 @@
         <img
           src="../../assets/photos/hero/homeHero.png"
           alt="hero-image"
-          class="w-8/12 lg:w-6/12 xl:w-8/12"
+          class="w-8/12 lg:w-6/12 xl:w-8/12 hidden md:block"
         />
       </div>
     </div>

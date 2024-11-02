@@ -5,7 +5,7 @@
 
     <!-- Categories Section -->
     <section class="container mt-20">
-      <h3 class="font-semibold text-xl py-2 my-4 uppercase">
+      <h3 class="font-semibold lg:text-xl sm:text-md py-2 my-4 uppercase">
         Discover our top Categories
       </h3>
 
@@ -15,7 +15,7 @@
       </div>
 
       <!-- Display categories grid if not loading -->
-      <div v-else class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         <div
           v-for="category in categories"
           :key="category._id"
